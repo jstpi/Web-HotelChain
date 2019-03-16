@@ -1,0 +1,41 @@
+#main_div{
+    height: 100%;
+    margin: 10px;
+    #credential_div{
+        position: absolute;
+        right: 0;
+        #credential_grid{
+            width: 200px;
+            .CredentialCol{
+                text-align: right;
+            }
+            #sign_up{
+            }
+            #log_in{
+            }
+        }
+    }
+    #title_div{
+        height:90%;
+        text-align:center; 
+        display:table;
+        width:100%;
+        #title_center_div{
+            display:table-cell; 
+            vertical-align:middle;
+            #title{
+            }
+            #input_center_div{
+                text-align: center;
+                #main_input{
+                    margin: auto;
+                    max-width: 1000px;
+                    #search_button{
+                        width:100px;
+                        height: 50px;
+                    }
+                }
+            }
+        }   
+    }
+}
