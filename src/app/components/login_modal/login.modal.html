@@ -1,0 +1,44 @@
+
+  <ion-header>
+    <ion-toolbar id="toolbar">
+      <ion-title>Log in</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content padding>
+    <ion-list>
+      <ion-radio-group>
+        <ion-list-header>
+          <ion-label>User type</ion-label>
+        </ion-list-header>
+        <ion-item>
+          <ion-label>Customer</ion-label>
+          <ion-radio value="Customer" checked></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Employee</ion-label>
+          <ion-radio value="Employee"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+    <ion-list>
+      <ion-list-header>
+        <ion-label>User Credential</ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-label><ion-icon name="person"></ion-icon></ion-label>
+        <ion-input placeholder="user"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label><ion-icon name="lock"></ion-icon></ion-label>
+        <ion-input placeholder="password"></ion-input>
+      </ion-item>
+    </ion-list>
+    <div id="submit_div">
+      <ion-button id="submit_button" expand="full" shape="round">Submit</ion-button>
+    </div>
+    <div id="sign_in_div">
+      <ion-button id="sign_in_button" fill="clear">
+          Sign in
+      </ion-button>
+    </div>
+  </ion-content>

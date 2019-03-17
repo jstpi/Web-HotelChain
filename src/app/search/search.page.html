@@ -1,12 +1,16 @@
-<div id="main_div">
+<ion-content id="main_content" padding>
   <div id="credential_div">
     <ion-grid id="credential_grid">
       <ion-row>
-        <ion-col class="CredentialCol">
-          <a id="sign_up">Sign up</a>
+        <ion-col class="CredentialCol" col-6>
+          <ion-button id="sign_in" fill="clear">
+            Sign in
+          </ion-button>
         </ion-col>
-        <ion-col class="CredentialCol">
-          <a id="log_in">Log in</a>
+        <ion-col class="CredentialCol" col-6>
+          <ion-button id="log_in" fill="clear" (click)="onLogIn()">
+            Log in
+          </ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -28,5 +32,5 @@
       </div>
     </div>
   </div>
-</div>
+</ion-content>
 
