@@ -10,11 +10,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { LoginModal } from '../app/components/login_modal/login.modal'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, LoginModal],
   entryComponents: [LoginModal],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [
+    BrowserModule, 
+    IonicModule.forRoot(), 
+    AppRoutingModule,
+    FormsModule, ReactiveFormsModule,
+  ],
   providers: [
     StatusBar,
     SplashScreen,

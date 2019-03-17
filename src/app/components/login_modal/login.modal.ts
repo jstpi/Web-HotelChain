@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams } from '@ionic/angular';
+import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'login-modal',
@@ -7,9 +8,34 @@ import { NavParams } from '@ionic/angular';
   styleUrls: ['./login.modal.scss'],
 })
 export class LoginModal implements OnInit {
+  private loginForm : FormGroup;
+  isSignIn: Boolean;
 
-  constructor(navParams: NavParams) { }
+  constructor(navParams: NavParams, private formBuilder: FormBuilder) {
+    this.loginForm = this.formBuilder.group({
+      type: ['', Validators.required],
+      user: ['', Validators.required],
+      pass: ['', Validators.required],
+    });
+    this.isSignIn = true;
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    let typeControl = this.loginForm.get('type');
+    typeControl.valueChanges.forEach(
+      (value: string) => {
+        if (value == "Employee"){
+          this.isSignIn = false;
+        }
+        else {
+          this.isSignIn = true;
+        }
+      }
+    );
+  }
+
+  submit(){
+    console.log(this.loginForm.value);
+  }
 
 }

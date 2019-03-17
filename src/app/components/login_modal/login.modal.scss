@@ -10,6 +10,12 @@
 }
 #sign_in_div{
     text-align: center;
+    line-height: 30px;
+    #sign_in_text{
+        display: inline-block;
+        vertical-align: middle;
+        line-height: normal;
+    }
     #sign_in_button{
         margin: auto;
         width: auto;
