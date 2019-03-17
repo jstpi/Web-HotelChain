@@ -1,0 +1,67 @@
+
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="back()"><ion-icon name="arrow-back"></ion-icon></ion-button>
+      </ion-buttons>
+      <ion-title>Sign in</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content padding>
+    <form [formGroup]="signinForm" (ngSubmit)="submit()">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>User Credential</ion-label>
+        </ion-list-header>
+        <ion-item>
+          <ion-label><ion-icon name="person"></ion-icon></ion-label>
+          <ion-input placeholder="user" formControlName="user"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label><ion-icon name="lock"></ion-icon></ion-label>
+          <ion-input placeholder="password" formControlName="pass" type="password"></ion-input>
+        </ion-item>
+      </ion-list>
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Address (optional)</ion-label>
+        </ion-list-header>
+        <ion-item>
+          <ion-label>Country</ion-label>
+          <ion-select [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One" formControlName="country">
+            <ion-select-option value="CAN">Canada</ion-select-option>
+            <ion-select-option value="USA">United States</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item *ngIf="isCountryChosen && isCAN">
+          <ion-label>Province</ion-label>
+          <ion-select [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One" formControlName="state_province">
+            <ion-select-option *ngFor="let province of provinces" value="{{province}}">{{province}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item *ngIf="isCountryChosen && !isCAN">
+          <ion-label>State</ion-label>
+          <ion-select [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One" formControlName="state_province">
+            <ion-select-option *ngFor="let state of sates" value="{{state}}">{{state}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="isStateProvChosen">
+          <ion-item >
+            <ion-label>City</ion-label>
+            <ion-input formControlName="city"></ion-input>
+          </ion-item>
+          <ion-item >
+            <ion-label>Street Address</ion-label>
+            <ion-input formControlName="street"></ion-input>
+          </ion-item>
+          <ion-item >
+            <ion-label>Postal Code</ion-label>
+            <ion-input formControlName="postalCode"></ion-input>
+          </ion-item>
+        </div>
+      </ion-list>
+      <div id="submit_div">
+        <ion-button id="submit_button" expand="full" shape="round" type="submit" [disabled]="!signinForm.valid">Submit</ion-button>
+      </div>
+    </form>
+  </ion-content>

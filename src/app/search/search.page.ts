@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { LoginModal } from '../components/login_modal/login.modal';
+import { SigninModal } from '../components/signin-modal/signin.modal'
 
 @Component({
   selector: 'app-search',
@@ -16,6 +17,13 @@ export class SearchPage implements OnInit {
   async onLogIn(){
     let modal = await this.modalCtrl.create({
       component: LoginModal
+    })
+    return await modal.present();
+  }
+
+  async onSignIn(){
+    let modal = await this.modalCtrl.create({
+      component: SigninModal
     })
     return await modal.present();
   }

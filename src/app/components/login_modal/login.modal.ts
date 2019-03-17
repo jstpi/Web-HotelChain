@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 @Component({
@@ -9,9 +9,11 @@ import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms'
 })
 export class LoginModal implements OnInit {
   private loginForm : FormGroup;
+  modalCtrl: ModalController
   isSignIn: Boolean;
 
-  constructor(navParams: NavParams, private formBuilder: FormBuilder) {
+  constructor(modalCtrl: ModalController, private formBuilder: FormBuilder) {
+    this.modalCtrl = modalCtrl;
     this.loginForm = this.formBuilder.group({
       type: ['', Validators.required],
       user: ['', Validators.required],
@@ -34,7 +36,12 @@ export class LoginModal implements OnInit {
     );
   }
 
+  back(){
+    this.modalCtrl.dismiss();
+  }
+
   submit(){
+    this.modalCtrl.dismiss();
     console.log(this.loginForm.value);
   }
 
