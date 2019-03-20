@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { LoginModal } from '../components/login_modal/login.modal';
-import { SigninModal } from '../components/signin-modal/signin.modal'
+import { SigninModal } from '../components/signin-modal/signin.modal';
 
 @Component({
   selector: 'app-search',
@@ -9,23 +9,39 @@ import { SigninModal } from '../components/signin-modal/signin.modal'
   styleUrls: ['./search.page.scss'],
 })
 export class SearchPage implements OnInit {
+  isLogedIn: Boolean;
 
-  constructor(public modalCtrl: ModalController) { }
+  constructor(public modalCtrl: ModalController) { 
+    this.isLogedIn = false;
+  }
 
   ngOnInit() {}
 
   async onLogIn(){
     let modal = await this.modalCtrl.create({
-      component: LoginModal
+      component: LoginModal,
     })
-    return await modal.present();
+    await modal.present();
+    return await modal.onWillDismiss().then((data?)=>{
+      if (data.data.closeEvent == "signin"){
+        this.onSignIn();
+      }
+      else if (data.data.closeEvent == "submit"){
+        console.log("!!change UI!!")
+      }
+    });
   }
 
   async onSignIn(){
     let modal = await this.modalCtrl.create({
-      component: SigninModal
-    })
-    return await modal.present();
+      component: SigninModal,
+    });
+    await modal.present();
+    return await modal.onWillDismiss().then((data?)=>{
+      if (data.data.closeEvent == "submit"){
+        console.log("!!change UI!!")
+      }
+    });
   }
 
 }

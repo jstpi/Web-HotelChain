@@ -137,12 +137,12 @@ export class SigninModal implements OnInit {
   }
 
   back(){
-    this.modalCtrl.dismiss();
+    this.modalCtrl.dismiss({closeEvent: "back"});
   }
 
   submit(){
     console.log(this.signinForm.value);
-    this.modalCtrl.dismiss();
+    this.modalCtrl.dismiss({closeEvent: "submit"});
   }
 
 }

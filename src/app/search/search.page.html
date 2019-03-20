@@ -1,10 +1,10 @@
 <ion-content id="main_content" padding>
   <div id="credential_div">
-    <ion-grid id="credential_grid">
+    <ion-grid id="credential_grid" *ngIf="!isLogedIn">
       <ion-row>
         <ion-col class="CredentialCol" col-6>
           <ion-button id="sign_in" fill="clear" (click)="onSignIn()">
-            Sign in
+            Sign up
           </ion-button>
         </ion-col>
         <ion-col class="CredentialCol" col-6>
@@ -14,6 +14,11 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+    <div *ngIf="isLogedIn">
+      <ion-button id="profile" fill="clear" color="dark">
+        #TODO (Jer) (arrow)
+      </ion-button>
+    </div>
   </div>
   <div id="title_div">
     <div id="title_center_div">

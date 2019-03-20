@@ -11,6 +11,7 @@ export class LoginModal implements OnInit {
   private loginForm : FormGroup;
   modalCtrl: ModalController
   isSignIn: Boolean;
+  isExitByButton: Boolean;
 
   constructor(modalCtrl: ModalController, private formBuilder: FormBuilder) {
     this.modalCtrl = modalCtrl;
@@ -20,6 +21,7 @@ export class LoginModal implements OnInit {
       pass: ['', Validators.required],
     });
     this.isSignIn = true;
+    this.isExitByButton = false;
   }
 
   ngOnInit() {
@@ -36,13 +38,26 @@ export class LoginModal implements OnInit {
     );
   }
 
+  ngOnDestroy(){
+    if (!this.isExitByButton){
+      this.modalCtrl.dismiss({closeEvent: "back"});
+    }
+  }
+
   back(){
-    this.modalCtrl.dismiss();
+    this.isExitByButton = true;
+    this.modalCtrl.dismiss({closeEvent: "back"});
+  }
+
+  signin(){
+    this.isExitByButton = true;
+    this.modalCtrl.dismiss({closeEvent: "signin"});
   }
 
   submit(){
-    this.modalCtrl.dismiss();
+    this.isExitByButton = true;
     console.log(this.loginForm.value);
+    this.modalCtrl.dismiss({closeEvent: "submit"});
   }
 
 }

@@ -4,7 +4,7 @@
       <ion-buttons slot="start">
         <ion-button (click)="back()"><ion-icon name="arrow-back"></ion-icon></ion-button>
       </ion-buttons>
-      <ion-title>Sign in</ion-title>
+      <ion-title>Sign up</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content padding>
@@ -46,15 +46,15 @@
           </ion-select>
         </ion-item>
         <div *ngIf="isStateProvChosen">
-          <ion-item >
+          <ion-item>
             <ion-label>City</ion-label>
             <ion-input formControlName="city"></ion-input>
           </ion-item>
-          <ion-item >
+          <ion-item>
             <ion-label>Street Address</ion-label>
             <ion-input formControlName="street"></ion-input>
           </ion-item>
-          <ion-item >
+          <ion-item>
             <ion-label>Postal Code</ion-label>
             <ion-input formControlName="postalCode"></ion-input>
           </ion-item>

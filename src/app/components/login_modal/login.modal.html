@@ -19,7 +19,7 @@
             <ion-radio value="Customer" checked></ion-radio>
           </ion-item>
           <ion-item>
-            <ion-label>Employee</ion-label>
+            <ion-label>Hotel</ion-label>
             <ion-radio value="Employee"></ion-radio>
           </ion-item>
         </ion-radio-group>
@@ -42,8 +42,8 @@
       </div>
       <div id="sign_in_div" *ngIf="isSignIn">
         <span id="sign_in_text">No account? </span>
-        <ion-button id="sign_in_button" fill="clear" item-right>
-            Sign in
+        <ion-button item-right id="sign_in_button" fill="clear" (click)="signin()">
+            Sign up
         </ion-button>
       </div>
     </form>
