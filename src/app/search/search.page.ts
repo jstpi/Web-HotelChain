@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, PopoverController } from '@ionic/angular';
 import { LoginModal } from '../components/login_modal/login.modal';
-import { SigninModal } from '../components/signin-modal/signin.modal';
+import { SigninModal } from '../components/signin_modal/signin.modal';
+import { MainPopover } from '../components/main_popover/main.popover';
 
 @Component({
   selector: 'app-search',
@@ -11,11 +12,23 @@ import { SigninModal } from '../components/signin-modal/signin.modal';
 export class SearchPage implements OnInit {
   isLogedIn: Boolean;
 
-  constructor(public modalCtrl: ModalController) { 
+  constructor(
+    public modalCtrl: ModalController,
+    public popoverController: PopoverController
+    ) { 
     this.isLogedIn = false;
   }
 
   ngOnInit() {}
+
+  async presentPopover(ev: any) {
+    const popover = await this.popoverController.create({
+      component: MainPopover,
+      event: ev,
+      translucent: true
+    });
+    return await popover.present();
+  }
 
   async onLogIn(){
     let modal = await this.modalCtrl.create({
@@ -27,7 +40,7 @@ export class SearchPage implements OnInit {
         this.onSignIn();
       }
       else if (data.data.closeEvent == "submit"){
-        console.log("!!change UI!!")
+        this.isLogedIn = true;
       }
     });
   }

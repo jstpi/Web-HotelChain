@@ -1,41 +1,40 @@
 <ion-content id="main_content" padding>
-  <div id="credential_div">
-    <ion-grid id="credential_grid" *ngIf="!isLogedIn">
-      <ion-row>
-        <ion-col class="CredentialCol" col-6>
-          <ion-button id="sign_in" fill="clear" (click)="onSignIn()">
-            Sign up
-          </ion-button>
-        </ion-col>
-        <ion-col class="CredentialCol" col-6>
-          <ion-button id="log_in" fill="clear" (click)="onLogIn()">
-            Log in
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    <div *ngIf="isLogedIn">
-      <ion-button id="profile" fill="clear" color="dark">
-        #TODO (Jer) (arrow)
-      </ion-button>
+<div id="credential_div">
+  <ion-grid id="credential_grid" *ngIf="!isLogedIn">
+    <ion-row>
+      <ion-col class="CredentialCol" col-6>
+        <ion-button id="sign_in" fill="clear" (click)="onSignIn()">
+          Sign up
+        </ion-button>
+      </ion-col>
+      <ion-col class="CredentialCol" col-6>
+        <ion-button id="log_in" fill="clear" (click)="onLogIn()">
+          Log in
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div id="user_div" *ngIf="isLogedIn">
+    <ion-button id="user" fill="clear" (click)="presentPopover($event)">
+      #TODO JER
+    </ion-button>
+  </div>
+</div>
+<div id="title_div">
+  <div id="title_center_div">
+    <h1 id="title">E-Hotel</h1>
+    <div id="input_center_div">
+      <ion-grid>
+        <ion-row justify-content-center>
+          <ion-col align-self-center>
+            <ion-item id="main_input">
+              <ion-input placeholder="TODO: City"></ion-input>
+              <ion-button id="search_button" shape="round" clear item-right>Search</ion-button>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </div>
   </div>
-  <div id="title_div">
-    <div id="title_center_div">
-      <h1 id="title">E-Hotel</h1>
-      <div id="input_center_div">
-        <ion-grid>
-          <ion-row justify-content-center>
-            <ion-col align-self-center>
-              <ion-item id="main_input">
-                <ion-input placeholder="TODO: City"></ion-input>
-                <ion-button id="search_button" shape="round" clear item-right>Search</ion-button>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </div>
-    </div>
-  </div>
+</div>
 </ion-content>
-

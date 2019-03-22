@@ -11,7 +11,7 @@
     <form [formGroup]="signinForm" (ngSubmit)="submit()">
       <ion-list>
         <ion-list-header>
-          <ion-label>User Credential</ion-label>
+          <ion-label>User Credential (required)</ion-label>
         </ion-list-header>
         <ion-item>
           <ion-label><ion-icon name="person"></ion-icon></ion-label>
@@ -20,6 +20,19 @@
         <ion-item>
           <ion-label><ion-icon name="lock"></ion-icon></ion-label>
           <ion-input placeholder="password" formControlName="pass" type="password"></ion-input>
+        </ion-item>
+      </ion-list>
+      <ion-list>
+        <ion-list-header>
+          <ion-label>User Information (required)</ion-label>
+        </ion-list-header>
+        <ion-item>
+          <ion-label>Full Name</ion-label>
+          <ion-input formControlName="fullName"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>SIN / SSN</ion-label>
+          <ion-input formControlName="sin"></ion-input>
         </ion-item>
       </ion-list>
       <ion-list>

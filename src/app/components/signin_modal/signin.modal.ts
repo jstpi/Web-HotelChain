@@ -24,6 +24,8 @@ export class SigninModal implements OnInit {
     this.signinForm = this.formBuilder.group({
       user: ['', Validators.required],
       pass: ['', Validators.required],
+      fullName: ['', Validators.required],
+      sin: ['', Validators.required],
       country: [''],
       state_province: [''],
       city: [''],
