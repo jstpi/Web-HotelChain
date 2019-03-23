@@ -27,11 +27,11 @@
           <ion-label>User Information (required)</ion-label>
         </ion-list-header>
         <ion-item>
-          <ion-label>Full Name</ion-label>
+          <ion-label class="inputLabel">Full Name</ion-label>
           <ion-input formControlName="fullName"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-label>SIN / SSN</ion-label>
+          <ion-label class="inputLabel">SIN / SSN</ion-label>
           <ion-input formControlName="sin"></ion-input>
         </ion-item>
       </ion-list>
@@ -60,15 +60,15 @@
         </ion-item>
         <div *ngIf="isStateProvChosen">
           <ion-item>
-            <ion-label>City</ion-label>
+            <ion-label class="inputLabel">City</ion-label>
             <ion-input formControlName="city"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label>Street Address</ion-label>
+            <ion-label class="inputLabel">Street Address</ion-label>
             <ion-input formControlName="street"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label>Postal Code</ion-label>
+            <ion-label class="inputLabel">Postal Code</ion-label>
             <ion-input formControlName="postalCode"></ion-input>
           </ion-item>
         </div>

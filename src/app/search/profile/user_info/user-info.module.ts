@@ -2,7 +2,7 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // import { TabsPageRoutingModule } from './tabs.router.module';
 
@@ -12,8 +12,8 @@ import { UserInfoPage } from './user-info.page';
   imports: [
     IonicModule,
     CommonModule,
-    FormsModule,
-    RouterModule.forChild([{ path: '', component: UserInfoPage, outlet: 'info' }])
+    RouterModule.forChild([{ path: '', component: UserInfoPage, outlet: 'info' }]),
+    FormsModule, ReactiveFormsModule,
   ],
   declarations: [UserInfoPage]
 })

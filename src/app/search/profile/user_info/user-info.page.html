@@ -1,12 +1,13 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-button (click)="back()"><ion-icon name="arrow-back"></ion-icon></ion-button>
+            <ion-back-button defaultHref=""></ion-back-button>
         </ion-buttons>
         <ion-title>E-Hotel</ion-title>
     </ion-toolbar>
 </ion-header>
 <ion-content padding>
+    <form [formGroup]="editUserForm" (ngSubmit)="submit()">
     <ion-grid>
         <ion-row class="rowHeader">
             <p>User information</p>
@@ -16,7 +17,10 @@
                 <p>User</p>
             </ion-col>
             <ion-col>
-                <p>jstpi047</p>
+                <p *ngIf="!isEditMode">{{userName}}</p>
+                <ion-item *ngIf="isEditMode">
+                    <ion-input formControlName="user"></ion-input>
+                </ion-item>
             </ion-col>
         </ion-row>
         <ion-row>
@@ -24,7 +28,10 @@
                 <p>Full Name</p>
             </ion-col>
             <ion-col>
-                <p>Jérémie St-Pierre</p>
+                <p *ngIf="!isEditMode">{{fullName}}</p>
+                <ion-item *ngIf="isEditMode">
+                    <ion-input formControlName="fullName"></ion-input>
+                </ion-item>
             </ion-col>
         </ion-row>
         <ion-row>
@@ -32,24 +39,73 @@
                 <p>SIN / SSN</p>
             </ion-col>
             <ion-col>
-                <p>345233553212334</p>
+                <p *ngIf="!isEditMode">{{sin}}</p>
+                <ion-item *ngIf="isEditMode">
+                    <ion-input *ngIf="isEditMode" formControlName="sin"></ion-input>
+                </ion-item>
             </ion-col>
         </ion-row>
         <ion-row class="rowHeader">
             <p>Address</p>
         </ion-row>
         <ion-row>
-            <ion-col class="colHeader" size="3">
+            <ion-col *ngIf="!isEditMode" class="colHeader" size="3">
             
             </ion-col>
             <ion-col>
-                <p class="postal-address"> 123 Main St. <br> Anytown, XY 12345 </p>
+                <p *ngIf="!isEditMode" class="postal-address"> {{street}} <br> {{city}}, {{state_province}} {{country}} {{postalCode}} </p>
+                <ion-list *ngIf="isEditMode">
+                    <ion-item>
+                        <ion-label>Country</ion-label>
+                        <ion-select [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One" formControlName="country">
+                        <ion-select-option value="CAN">Canada</ion-select-option>
+                        <ion-select-option value="USA">United States</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                    <ion-item *ngIf="isCountryChosen && isCAN">
+                        <ion-label>Province</ion-label>
+                        <ion-select [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One" formControlName="state_province">
+                        <ion-select-option *ngFor="let province of provinces" value="{{province}}">{{province}}</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                    <ion-item *ngIf="isCountryChosen && !isCAN">
+                        <ion-label>State</ion-label>
+                        <ion-select [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One" formControlName="state_province">
+                        <ion-select-option *ngFor="let state of states" value="{{state}}">{{state}}</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                    <div *ngIf="isStateProvChosen">
+                        <ion-item>
+                            <ion-label class="inputLabel">City</ion-label>
+                            <ion-input formControlName="city"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label class="inputLabel">Street Address</ion-label>
+                            <ion-input formControlName="street"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label class="inputLabel">Postal Code</ion-label>
+                            <ion-input formControlName="postalCode"></ion-input>
+                        </ion-item>
+                    </div>
+                </ion-list>
             </ion-col>
         </ion-row>
     </ion-grid>
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button>
-            <ion-icon name="create"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
+    </form>
 </ion-content>
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="editMode()">
+        <ion-icon name="create"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="end">
+        <ion-fab-button color="success" type="submit" [disabled]="!editUserForm.valid" *ngIf="editUserForm.valid && !editUserForm.valid">
+            <ion-icon name="checkmark"></ion-icon>
+        </ion-fab-button>
+    </ion-fab-list>
+</ion-fab>
+<ion-fab id="successFab" *ngIf="isEditMode" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="success" type="submit" [disabled]="!editUserForm.valid" (click)="submit()">
+        <ion-icon name="checkmark"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
