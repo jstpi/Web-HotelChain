@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
+import { Customer } from 'src/app/objects/customer.vm';
+import { Address } from 'src/app/objects/address.vm';
 
 @Component({
   selector: 'app-info',
@@ -8,14 +10,7 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./user-info.page.scss'],
 })
 export class UserInfoPage implements OnInit {
-  userName: String;
-  fullName: String;
-  sin: String;
-  country: String;
-  state_province: String;
-  city: String;
-  street: String;
-  postalCode: String;
+  user: Customer;
 
   isEditMode: boolean;
 
@@ -30,28 +25,25 @@ export class UserInfoPage implements OnInit {
     private formBuilder: FormBuilder, 
     public toastController: ToastController) {
     this.isEditMode = false;
+
     // TODO: change to a subscription
-    this.userName = "jstpi047";
-    this.fullName = "Jérémie St-Pierre";
-    this.sin = "23498098239487";
-    this.country = "CAN";
-    this.state_province = "Ontario";
-    this.city = "Ottawa";
-    this.street = "7, Main St.";
-    this.postalCode = "K0A 1M0";
+
+    let today = new Date();
+    let address = new Address("CAN", "Ontario", "Ottawa", "7, Main St.", "K0A 1M0");
+    this.user = new Customer("jstpi047", "23434654", "Jérémie St-Pierre", address, today.toISOString());
 
     this.isCountryChosen = false;
     this.isStateProvChosen = false;
     this.isCAN = false;
     this.editUserForm = this.formBuilder.group({
-      user: [this.userName, Validators.required],
-      fullName: [this.fullName, Validators.required],
-      sin: [this.sin, Validators.required],
-      country: [this.country],
-      state_province: [this.state_province],
-      city: [this.city],
-      street: [this.street],
-      postalCode: [this.postalCode],
+      user: [this.user.user, Validators.required],
+      fullName: [this.user.full_name, Validators.required],
+      sin: [this.user.sin, Validators.required],
+      country: [this.user.address.country],
+      state_province: [this.user.address.state_province],
+      city: [this.user.address.city],
+      street: [this.user.address.street],
+      postalCode: [this.user.address.postalCode],
     });
     this.provinces = [
       "Ontario", 
@@ -134,14 +126,14 @@ export class UserInfoPage implements OnInit {
     else {
       this.isEditMode = true;
       this.editUserForm = this.formBuilder.group({
-        user: [this.userName, Validators.required],
-        fullName: [this.fullName, Validators.required],
-        sin: [this.sin, Validators.required],
-        country: [this.country],
-        state_province: [this.state_province],
-        city: [this.city],
-        street: [this.street],
-        postalCode: [this.postalCode],
+        user: [this.user.user, Validators.required],
+        fullName: [this.user.full_name, Validators.required],
+        sin: [this.user.sin, Validators.required],
+        country: [this.user.address.country],
+        state_province: [this.user.address.state_province],
+        city: [this.user.address.city],
+        street: [this.user.address.street],
+        postalCode: [this.user.address.postalCode],
       });
     }
   }
@@ -160,16 +152,16 @@ export class UserInfoPage implements OnInit {
   }
 
   private addressInputControl(){
-    if (this.country != ""){
+    if (this.user.address.country != ""){
       this.isCountryChosen = true;
-      if (this.country == "CAN"){
+      if (this.user.address.country == "CAN"){
         this.isCAN = true;
       }
-      else if (this.country == "USA"){
+      else if (this.user.address.country == "USA"){
         this.isCAN = false;
       }
     }
-    if (this.state_province != ""){
+    if (this.user.address.state_province != ""){
       this.isStateProvChosen = true;
     }
 

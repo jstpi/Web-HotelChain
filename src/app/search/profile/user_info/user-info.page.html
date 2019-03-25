@@ -17,7 +17,7 @@
                 <p>User</p>
             </ion-col>
             <ion-col>
-                <p *ngIf="!isEditMode">{{userName}}</p>
+                <p *ngIf="!isEditMode">{{user.user}}</p>
                 <ion-item *ngIf="isEditMode">
                     <ion-input formControlName="user"></ion-input>
                 </ion-item>
@@ -28,7 +28,7 @@
                 <p>Full Name</p>
             </ion-col>
             <ion-col>
-                <p *ngIf="!isEditMode">{{fullName}}</p>
+                <p *ngIf="!isEditMode">{{user.full_name}}</p>
                 <ion-item *ngIf="isEditMode">
                     <ion-input formControlName="fullName"></ion-input>
                 </ion-item>
@@ -39,7 +39,7 @@
                 <p>SIN / SSN</p>
             </ion-col>
             <ion-col>
-                <p *ngIf="!isEditMode">{{sin}}</p>
+                <p *ngIf="!isEditMode">{{user.sin}}</p>
                 <ion-item *ngIf="isEditMode">
                     <ion-input *ngIf="isEditMode" formControlName="sin"></ion-input>
                 </ion-item>
@@ -53,7 +53,7 @@
             
             </ion-col>
             <ion-col>
-                <p *ngIf="!isEditMode" class="postal-address"> {{street}} <br> {{city}}, {{state_province}} {{country}} {{postalCode}} </p>
+                <p *ngIf="!isEditMode" class="postal-address"> {{user.address.street}} <br> {{user.address.city}}, {{user.address.state_province}} {{user.address.country}} {{user.address.postalCode}} </p>
                 <ion-list *ngIf="isEditMode">
                     <ion-item>
                         <ion-label>Country</ion-label>

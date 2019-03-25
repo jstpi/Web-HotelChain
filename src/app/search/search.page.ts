@@ -62,18 +62,13 @@ export class SearchPage implements OnInit {
 
   private submitLogIn(){
     // Logic to credential
-    // Subscribe to data
     let today = new Date();
-    let user = new Customer("jstpi047", "23434654", "Jérémie St-Pierre", "CAN", "Ontario", "Ottawa", "7, Main St.", "K0A 1M0", today.toISOString());
-    this.navService.customer = user;
     this.isLogedIn = true;
   }
 
   private submitSignIn(){
     // Logic to credential
     let today = new Date();
-    let user = new Customer("jstpi047", "23434654", "Jérémie St-Pierre", "CAN", "Ontario", "Ottawa", "7, Main St.", "K0A 1M0", today.toISOString());
-    this.navService.customer = user;
     this.isLogedIn = true;
   }
 
