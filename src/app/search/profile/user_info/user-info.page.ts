@@ -26,7 +26,9 @@ export class UserInfoPage implements OnInit {
   provinces: Array<String>;
   states: Array<String>;
 
-  constructor(private formBuilder: FormBuilder, public toastController: ToastController) {
+  constructor(
+    private formBuilder: FormBuilder, 
+    public toastController: ToastController) {
     this.isEditMode = false;
     // TODO: change to a subscription
     this.userName = "jstpi047";

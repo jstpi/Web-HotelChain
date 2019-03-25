@@ -14,6 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginModal } from '../app/components/login_modal/login.modal';
 import { SigninModal } from '../app/components/signin_modal/signin.modal';
 import { MainPopover } from './components/main_popover/main.popover';
+import { NavService } from './services/nav.service';
 
 @NgModule({
   declarations: [AppComponent, LoginModal, SigninModal, MainPopover],
@@ -27,7 +28,8 @@ import { MainPopover } from './components/main_popover/main.popover';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    NavService
   ],
   bootstrap: [AppComponent]
 })

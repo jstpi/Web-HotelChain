@@ -1,11 +1,18 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-button (click)="back()"><ion-icon name="arrow-back"></ion-icon></ion-button>
+            <ion-back-button defaultHref=""></ion-back-button>
         </ion-buttons>
         <ion-title>E-Hotel</ion-title>
     </ion-toolbar>
 </ion-header>
 <ion-content padding>
-    
+    <ion-list>
+        <ion-item *ngFor="let room of rooms">
+            <ion-thumbnail slot="start">
+                <ion-icon name="calendar"></ion-icon>
+            </ion-thumbnail>
+            <ion-label>TESTING</ion-label>
+        </ion-item>
+    </ion-list>
 </ion-content>

@@ -3,6 +3,9 @@ import { ModalController, PopoverController } from '@ionic/angular';
 import { LoginModal } from '../components/login_modal/login.modal';
 import { SigninModal } from '../components/signin_modal/signin.modal';
 import { MainPopover } from '../components/main_popover/main.popover';
+import { Customer } from '../objects/customer.vm';
+import { Employee } from '../objects/employee.vm';
+import { NavService } from '../services/nav.service';
 
 @Component({
   selector: 'app-search',
@@ -14,8 +17,8 @@ export class SearchPage implements OnInit {
 
   constructor(
     public modalCtrl: ModalController,
-    public popoverController: PopoverController
-    ) { 
+    public popoverController: PopoverController,
+    public navService: NavService) { 
     this.isLogedIn = false;
   }
 
@@ -40,7 +43,7 @@ export class SearchPage implements OnInit {
         this.onSignIn();
       }
       else if (data.data.closeEvent == "submit"){
-        this.isLogedIn = true;
+        this.submitLogIn();
       }
     });
   }
@@ -52,9 +55,26 @@ export class SearchPage implements OnInit {
     await modal.present();
     return await modal.onWillDismiss().then((data?)=>{
       if (data.data.closeEvent == "submit"){
-        console.log("!!change UI!!")
+        this.submitSignIn()
       }
     });
+  }
+
+  private submitLogIn(){
+    // Logic to credential
+    // Subscribe to data
+    let today = new Date();
+    let user = new Customer("jstpi047", "23434654", "Jérémie St-Pierre", "CAN", "Ontario", "Ottawa", "7, Main St.", "K0A 1M0", today.toISOString());
+    this.navService.customer = user;
+    this.isLogedIn = true;
+  }
+
+  private submitSignIn(){
+    // Logic to credential
+    let today = new Date();
+    let user = new Customer("jstpi047", "23434654", "Jérémie St-Pierre", "CAN", "Ontario", "Ottawa", "7, Main St.", "K0A 1M0", today.toISOString());
+    this.navService.customer = user;
+    this.isLogedIn = true;
   }
 
 }

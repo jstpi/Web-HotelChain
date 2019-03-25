@@ -13,5 +13,4 @@ export class MainPopover implements OnInit {
   ngOnInit() {
   }
 
-
 }
