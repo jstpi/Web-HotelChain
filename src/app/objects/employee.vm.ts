@@ -9,12 +9,12 @@ export class Employee {
     roles: string[];
     hotel: Hotel
     constructor(
+        hotel: Hotel,
         user: string, 
         sin: string, 
         full_name: string, 
         address: Address,
-        roles: string[], 
-        hotel: Hotel) {
+        roles: string[]) {
         this.user = user;
         this.sin = sin;
         this.full_name = full_name;

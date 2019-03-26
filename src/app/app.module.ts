@@ -1,6 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http'
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -15,9 +16,8 @@ import { LoginModal } from '../app/components/login_modal/login.modal';
 import { SigninModal } from '../app/components/signin_modal/signin.modal';
 import { MainPopover } from './components/main_popover/main.popover';
 import { NavService } from './services/nav.service';
-import { RequestOptions } from '@angular/http';
-import { AuthRequestOptions } from './services/auth-request.service';
 import { AuthErrorHandler } from './services/error-handler.service';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [AppComponent, LoginModal, SigninModal, MainPopover],
@@ -26,14 +26,15 @@ import { AuthErrorHandler } from './services/error-handler.service';
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
-    FormsModule, ReactiveFormsModule
+    FormsModule, ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: RequestOptions, useClass: AuthRequestOptions},
     { provide: ErrorHandler, useClass: AuthErrorHandler },
+    AuthService,
     NavService
   ],
   bootstrap: [AppComponent]

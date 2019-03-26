@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'login-modal',
@@ -13,11 +14,11 @@ export class LoginModal implements OnInit {
   isSignIn: Boolean;
   isExitByButton: Boolean;
 
-  constructor(modalCtrl: ModalController, private formBuilder: FormBuilder) {
+  constructor(modalCtrl: ModalController, private formBuilder: FormBuilder, private authService: AuthService) {
     this.modalCtrl = modalCtrl;
     this.loginForm = this.formBuilder.group({
       type: ['', Validators.required],
-      user: ['', Validators.required],
+      email: ['', Validators.required],
       pass: ['', Validators.required],
     });
     this.isSignIn = true;
@@ -56,7 +57,9 @@ export class LoginModal implements OnInit {
 
   submit(){
     this.isExitByButton = true;
-    console.log(this.loginForm.value);
+
+    this.authService.login(this.loginForm.value).subscribe(loginInfo => console.log(loginInfo));
+
     this.modalCtrl.dismiss({closeEvent: "submit"});
   }
 

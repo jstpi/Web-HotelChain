@@ -13,7 +13,7 @@ export class Room {
     hotel: Hotel;
     rents: Rent[];
     books: Book[];
-    constructor(number: number, price: number, capacity: number, view_type: string, is_extendable: boolean, problems: string[], amenities: string[], hotel: Hotel) {
+    constructor(hotel: Hotel, number: number, price: number, capacity: number, view_type: string, is_extendable: boolean, problems: string[], amenities: string[]) {
         this.number = number;
         this.price = price;
         this.capacity = capacity;
