@@ -19,7 +19,7 @@ export class LoginModal implements OnInit {
     this.loginForm = this.formBuilder.group({
       type: ['', Validators.required],
       email: ['', Validators.required],
-      pass: ['', Validators.required],
+      password: ['', Validators.required],
     });
     this.isSignIn = true;
     this.isExitByButton = false;
@@ -58,7 +58,8 @@ export class LoginModal implements OnInit {
   submit(){
     this.isExitByButton = true;
 
-    this.authService.login(this.loginForm.value).subscribe(loginInfo => console.log(loginInfo));
+    console.log(JSON.stringify(this.loginForm.value));
+    this.authService.login(JSON.stringify(this.loginForm.value)).subscribe(loginInfo => console.log(loginInfo));
 
     this.modalCtrl.dismiss({closeEvent: "submit"});
   }

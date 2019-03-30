@@ -44,11 +44,9 @@ export class AuthService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
-        //'Authorization': 'my-auth-token'
       })
     };
-
-    return this.http.post(this.url, {params: user}, httpOptions)
+    return this.http.post(this.url, user, httpOptions)
       .pipe(
         catchError(this.handleError)
       );
