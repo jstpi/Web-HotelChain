@@ -3,6 +3,8 @@ import * as jwt_decode from 'jwt-decode';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import * as moment from "moment";
+import * as JWT from 'jwt-decode';
 
 export const TOKEN_NAME: string = 'jwt_token';
 
@@ -10,35 +12,9 @@ export const TOKEN_NAME: string = 'jwt_token';
 export class AuthService {
 
   private url: string = 'http://localhost:8080/SampleWebApp/login';
+  private token: any;
 
   constructor(private http: HttpClient) { }
-
-  getToken(): string {
-    return localStorage.getItem(TOKEN_NAME);
-  }
-
-  setToken(token: string): void {
-    localStorage.setItem(TOKEN_NAME, token);
-  }
-
-  getTokenExpirationDate(token: string): Date {
-    const decoded = jwt_decode(token);
-
-    if (decoded.exp === undefined) return null;
-
-    const date = new Date(0); 
-    date.setUTCSeconds(decoded.exp);
-    return date;
-  }
-
-  isTokenExpired(token?: string): boolean {
-    if(!token) token = this.getToken();
-    if(!token) return true;
-
-    const date = this.getTokenExpirationDate(token);
-    if(date === undefined) return false;
-    return !(date.valueOf() > new Date().valueOf());
-  }
 
   login(user): Observable<any> {
     const httpOptions = {
@@ -66,6 +42,40 @@ export class AuthService {
     // return an observable with a user-facing error message
     return throwError(
       'Something bad happened; please try again later.');
+  }
+
+  setSession(authResult) {
+    this.token = JWT(authResult);
+    console.log(this.token);
+
+    const expiresAt = this.token.exp;
+
+    localStorage.setItem('id_token', authResult.idToken);
+    localStorage.setItem("expires_at", JSON.stringify(expiresAt) );
+  }
+  
+  setError(authResult):String {
+    this.token = JWT(authResult);
+    return this.token.sub;
+  }
+
+  logout() {
+      localStorage.removeItem("id_token");
+      localStorage.removeItem("expires_at");
+  }
+
+  public isLoggedIn() {
+    return moment().isBefore(this.getExpiration());
+  }
+
+  isLoggedOut() {
+      return !this.isLoggedIn();
+  }
+
+  getExpiration() {
+      const expiration = localStorage.getItem("expires_at");
+      const expiresAt = JSON.parse(expiration);
+      return moment.unix(expiresAt);
   }
 
 }

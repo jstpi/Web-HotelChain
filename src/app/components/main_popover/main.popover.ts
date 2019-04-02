@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
+import { PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'main-popover',
@@ -7,10 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainPopover implements OnInit {
 
-  constructor() {
+  constructor(private authService: AuthService, private popCtrl: PopoverController) {
   }
 
   ngOnInit() {
   }
 
+  logout(){
+    this.authService.logout();
+    this.popCtrl.dismiss({closeEvent: "logout"});
+  }
+  
 }

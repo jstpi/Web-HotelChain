@@ -14,6 +14,9 @@ export class LoginModal implements OnInit {
   isSignIn: Boolean;
   isExitByButton: Boolean;
 
+  //log in feedback
+  errorString: String;
+
   constructor(modalCtrl: ModalController, private formBuilder: FormBuilder, private authService: AuthService) {
     this.modalCtrl = modalCtrl;
     this.loginForm = this.formBuilder.group({
@@ -23,6 +26,7 @@ export class LoginModal implements OnInit {
     });
     this.isSignIn = true;
     this.isExitByButton = false;
+    this.errorString = "";
   }
 
   ngOnInit() {
@@ -57,11 +61,17 @@ export class LoginModal implements OnInit {
 
   submit(){
     this.isExitByButton = true;
+    this.errorString = "";
 
-    console.log(JSON.stringify(this.loginForm.value));
-    this.authService.login(JSON.stringify(this.loginForm.value)).subscribe(loginInfo => console.log(loginInfo));
-
-    this.modalCtrl.dismiss({closeEvent: "submit"});
+    this.authService.login(JSON.stringify(this.loginForm.value)).subscribe(loginInfo => {
+      if (loginInfo.valid){
+        this.authService.setSession(loginInfo.token);
+        this.modalCtrl.dismiss({closeEvent: "submit"});
+      }
+      else {
+        this.errorString = this.authService.setError(loginInfo.token);
+      }
+    }, err => this.errorString = err);
   }
 
 }

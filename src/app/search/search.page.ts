@@ -3,9 +3,7 @@ import { ModalController, PopoverController } from '@ionic/angular';
 import { LoginModal } from '../components/login_modal/login.modal';
 import { SigninModal } from '../components/signin_modal/signin.modal';
 import { MainPopover } from '../components/main_popover/main.popover';
-import { Customer } from '../objects/customer.vm';
-import { Employee } from '../objects/employee.vm';
-import { NavService } from '../services/nav.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-search',
@@ -18,11 +16,15 @@ export class SearchPage implements OnInit {
   constructor(
     public modalCtrl: ModalController,
     public popoverController: PopoverController,
-    public navService: NavService) { 
+    private authService: AuthService) { 
     this.isLogedIn = false;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.authService.isLoggedIn()){
+      this.isLogedIn = true;
+    }
+  }
 
   async presentPopover(ev: any) {
     const popover = await this.popoverController.create({
@@ -30,7 +32,12 @@ export class SearchPage implements OnInit {
       event: ev,
       translucent: true
     });
-    return await popover.present();
+    await popover.present();
+    return await popover.onWillDismiss().then((data?)=>{
+      if (data.data.closeEvent == "logout"){
+        this.isLogedIn = false;
+      }
+    });
   }
 
   async onLogIn(){
@@ -43,7 +50,7 @@ export class SearchPage implements OnInit {
         this.onSignIn();
       }
       else if (data.data.closeEvent == "submit"){
-        this.submitLogIn();
+        this.isLogedIn = true;
       }
     });
   }
@@ -54,22 +61,7 @@ export class SearchPage implements OnInit {
     });
     await modal.present();
     return await modal.onWillDismiss().then((data?)=>{
-      if (data.data.closeEvent == "submit"){
-        this.submitSignIn()
-      }
     });
-  }
-
-  private submitLogIn(){
-    // Logic to credential
-    let today = new Date();
-    this.isLogedIn = true;
-  }
-
-  private submitSignIn(){
-    // Logic to credential
-    let today = new Date();
-    this.isLogedIn = true;
   }
 
 }
