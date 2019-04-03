@@ -2,24 +2,20 @@ import { Hotel } from './hotel.vm';
 import { Address } from './address.vm';
 
 export class Employee {
-    user: string;
+    email: string;
     sin: string;
     full_name: string;
     address: Address;
     roles: string[];
-    hotel: Hotel
+    hotel: Hotel;
     constructor(
-        hotel: Hotel,
-        user: string, 
         sin: string, 
+        email: string, 
         full_name: string, 
-        address: Address,
-        roles: string[]) {
-        this.user = user;
+        address: Address) {
+        this.email = email;
         this.sin = sin;
         this.full_name = full_name;
         this.address = address;
-        this.roles = roles;
-        this.hotel = hotel;
     }
 }

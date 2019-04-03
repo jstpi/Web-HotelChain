@@ -82,4 +82,9 @@ export class AuthService {
     return JSON.parse(token).sub;
   }
 
+  getTokenRole(): string{
+    const token = localStorage.getItem("id_token");
+    return JSON.parse(token).iss;
+  }
+
 }

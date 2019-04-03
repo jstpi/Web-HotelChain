@@ -15,25 +15,36 @@
     </ion-row>
   </ion-grid>
   <div id="user_div" *ngIf="isLogedIn">
-    <ion-button id="user" fill="clear" (click)="presentPopover($event)">
+    <ion-button *ngIf="userType == 'Customer'" fill="clear" (click)="presentPopover($event)">
       {{user.full_name}}
+    </ion-button>
+    <ion-button *ngIf="userType == 'Employee'" fill="clear" (click)="presentPopover($event)">
+      {{employee.full_name}}
+    </ion-button>
+    <ion-button *ngIf="userType == 'Admin'" fill="clear" (click)="presentPopover($event)">
+      {{admin.full_name}}
     </ion-button>
   </div>
 </div>
 <div id="title_div">
   <div id="title_center_div">
-    <h1 id="title">E-Hotel</h1>
-    <div id="input_center_div">
-      <ion-grid>
-        <ion-row justify-content-center>
-          <ion-col align-self-center>
-            <ion-item id="main_input">
-              <ion-input placeholder="TODO: City"></ion-input>
-              <ion-button id="search_button" shape="round" clear item-right>Search</ion-button>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+    <div *ngIf="userType == 'Customer'">
+      <h1 id="title">E-Hotel</h1>
+      <div id="input_center_div">
+        <ion-grid>
+          <ion-row justify-content-center>
+            <ion-col align-self-center>
+              <ion-item id="main_input">
+                <ion-input placeholder="Ottawa"></ion-input>
+                <ion-button id="search_button" shape="round" clear item-right>Search</ion-button>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </div>
+    <div *ngIf="userType == 'Employee' || userType == 'Admin'">
+      <p>YO</p>
     </div>
   </div>
 </div>

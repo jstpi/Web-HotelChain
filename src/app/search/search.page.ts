@@ -7,6 +7,10 @@ import { AuthService } from 'src/app/services/auth.service';
 import { UserInfoService } from '../services/user-info.service';
 import { Customer } from '../objects/customer.vm';
 import { Address } from '../objects/address.vm';
+import { Employee } from '../objects/employee.vm';
+import { Admin } from '../objects/admin.vm';
+import { Hotel } from '../objects/hotel.vm';
+import { Chain } from '../objects/chain.vm';
 
 @Component({
   selector: 'app-search',
@@ -15,8 +19,11 @@ import { Address } from '../objects/address.vm';
 })
 export class SearchPage implements OnInit {
   isLogedIn: Boolean;
-  errorString: String;
+  errorString: string;
+  userType: string;
   user: Customer;
+  employee: Employee;
+  admin: Admin;
 
   constructor(
     public modalCtrl: ModalController,
@@ -26,6 +33,9 @@ export class SearchPage implements OnInit {
     this.isLogedIn = false;
     this.errorString = "";
     this.user = new Customer("", "", "", new Address("", "", "", "", ""), "");
+    this.employee = new Employee("", "", "", new Address("", "", "", "", ""));
+    this.admin = new Admin("", "", "");
+    this.userType = "Customer";
   }
 
   ngOnInit() {
@@ -45,6 +55,7 @@ export class SearchPage implements OnInit {
       if (data.data !== undefined){
         if (data.data.closeEvent == "logout"){
           this.isLogedIn = false;
+          this.userType = "Customer";
         }
       }
     });
@@ -79,17 +90,30 @@ export class SearchPage implements OnInit {
     });
   }
 
+  // get the customer, employee or admin
   private getUser(){
     this.errorString = "";
+    this.userType = this.authService.getTokenRole();
+    console.log(this.userType);
     let tokenSin = {
       sin: this.authService.getTokenId()
     }
+
     this.userInfoService.getUserInfo(JSON.stringify(tokenSin)).subscribe(userInfo => {
       if (userInfo.sin == null){
         this.isLogedIn = false;
+        this.userType = "Customer";
       }
       else {
-        this.user = new Customer(userInfo.email, userInfo.sin, userInfo.full_name, new Address("", "", "", "", ""), userInfo.date_registration);
+        if (this.userType == "Customer"){
+          this.user = new Customer(userInfo.email, userInfo.sin, userInfo.full_name, new Address("", "", "", "", ""), userInfo.date_registration);
+        }
+        else if (this.userType == "Employee"){
+          this.employee = new Employee(userInfo.sin, userInfo.email, userInfo.full_name, new Address("", "", "", "", ""));
+        }
+        else if (this.userType == "Admin"){
+          this.admin = new Admin(userInfo.sin, userInfo.full_name, userInfo.email);
+        }
         this.isLogedIn = true;
       }
     }, err => {
