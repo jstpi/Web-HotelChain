@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import { Address } from 'src/app/objects/address.vm';
 
 @Component({
   selector: 'signin-modal',
@@ -148,18 +149,31 @@ export class SigninModal implements OnInit {
 
   submit(){
     this.errorString = "";
+    let address = new Address(this.signinForm.value.country, this.signinForm.value.state_province, this.signinForm.value.city, this.signinForm.value.street, this.signinForm.value.postalCode);
+    let signinObj = {
+      email: this.signinForm.value.email,
+      password: this.signinForm.value.pass,
+      full_name: this.signinForm.value.fullName,
+      sin: this.signinForm.value.sin,
+      address: address.format()
+    }
+    let loginObj = {
+      email: this.signinForm.value.email,
+      password: this.signinForm.value.pass
+    }
 
-    // this.authService.login(JSON.stringify(this.loginForm.value)).subscribe(loginInfo => {
-    //   if (loginInfo.valid){
-    //     this.authService.setSession(loginInfo.token);
-    //     this.modalCtrl.dismiss({closeEvent: "submit"});
-    //   }
-    //   else {
-    //     this.errorString = this.authService.setError(loginInfo.token);
-    //   }
-    // }, err => this.errorString = err);
-    console.log(this.signinForm.value);
-    this.modalCtrl.dismiss({closeEvent: "submit"});
+    this.authService.signin(JSON.stringify(signinObj)).subscribe(signInInfo => {
+      console.log(signInInfo);
+      this.authService.login(JSON.stringify(loginObj)).subscribe(loginInfo => {
+        if (loginInfo.valid){
+          this.authService.setSession(loginInfo.token);
+          this.modalCtrl.dismiss({closeEvent: "submit"});
+        }
+        else {
+          this.errorString = this.authService.setError(loginInfo.token);
+        }
+      }, err => this.errorString = err);
+    }, err => this.errorString = err);
   }
 
 }

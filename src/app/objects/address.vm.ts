@@ -11,4 +11,8 @@ export class Address {
         this.street = street;
         this.postalCode = postalCode;
     }
+
+    public format(): string{
+        return this.street+", "+this.city+", "+this.state_province+", "+this.country+", "+this.postalCode
+    }
 }
