@@ -12,6 +12,7 @@ export const TOKEN_NAME: string = 'jwt_token';
 export class AuthService {
 
   private url: string = 'http://localhost:8080/SampleWebApp/login';
+  private signinUrl: string = 'http://localhost:8080/SampleWebApp/signUp'
   private token: any;
 
   constructor(private http: HttpClient) { }
@@ -34,7 +35,7 @@ export class AuthService {
         'Content-Type':  'application/json'
       })
     };
-    return this.http.post(this.url, user, httpOptions)
+    return this.http.post(this.signinUrl, user, httpOptions)
       .pipe(
         catchError(this.handleError)
       );
