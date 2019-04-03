@@ -11,23 +11,22 @@ import { Observable } from 'rxjs';
 })
 export class HotelsPage implements OnInit {
   errorString: string;
-  city: Observable<string>;
+  city: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private searchHotelService: SearchHotelService) { 
+    private searchHotelService: SearchHotelService) {
       this.errorString = "";
+      this.city = "";
   }
 
   ngOnInit() {
     this.errorString = "";
-    this.city = this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => {
-        return params.get('city');
-      })
-    );
-    this.searchHotelService.getHotels(JSON.stringify(this.city)).subscribe(hotels => {
+    let address={
+      hotel_address: this.route.snapshot.params['city']
+    }
+    this.searchHotelService.getHotels(JSON.stringify(address)).subscribe(hotels => {
       console.log(hotels);
     }, err => {
       this.errorString = err;

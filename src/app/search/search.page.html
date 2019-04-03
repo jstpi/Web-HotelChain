@@ -36,7 +36,7 @@
             <ion-col align-self-center>
               <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
                 <ion-item id="main_input">
-                  <ion-input placeholder="Ottawa" formControlName="address"></ion-input>
+                  <ion-input placeholder="e.g. Ottawa" formControlName="address"></ion-input>
                   <ion-button id="search_button" shape="round" type="submit" [disabled]="!searchForm.valid" clear item-right>Search</ion-button>
                 </ion-item>
               </form>

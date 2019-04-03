@@ -38,7 +38,7 @@ export class SearchPage implements OnInit {
     private userInfoService: UserInfoService,
     private router: Router) {
       this.searchForm = this.formBuilder.group({
-        address: ['Ottawa', Validators.required]
+        address: ['', Validators.required]
       });
     this.isLogedIn = false;
     this.errorString = "";
@@ -101,7 +101,8 @@ export class SearchPage implements OnInit {
   }
 
   onSearch(){
-    this.router.navigate(['search', {city: this.searchForm.value}])
+    this.router.navigate(['search', {city: this.searchForm.value.address}])
+
   }
 
   // get the customer, employee or admin
