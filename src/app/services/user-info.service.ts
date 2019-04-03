@@ -3,26 +3,23 @@ import * as jwt_decode from 'jwt-decode';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import * as moment from "moment";
-import * as JWT from 'jwt-decode';
 
 export const TOKEN_NAME: string = 'jwt_token';
 
 @Injectable()
-export class AuthService {
+export class UserInfoService {
 
-  private url: string = 'http://localhost:8080/SampleWebApp/login';
-  private token: any;
+  private url: string = 'http://localhost:8080/SampleWebApp/userInfo';
 
   constructor(private http: HttpClient) { }
 
-  login(user): Observable<any> {
+  getUserInfo(userSIN): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
       })
     };
-    return this.http.post(this.url, user, httpOptions)
+    return this.http.post(this.url, userSIN, httpOptions)
       .pipe(
         catchError(this.handleError)
       );
@@ -42,44 +39,6 @@ export class AuthService {
     // return an observable with a user-facing error message
     return throwError(
       'Something bad happened; please try again later.');
-  }
-
-  setSession(authResult) {
-    this.token = JWT(authResult);
-
-    const expiresAt = this.token.exp;
-
-    localStorage.setItem('id_token', JSON.stringify(this.token));
-    localStorage.setItem("expires_at", JSON.stringify(expiresAt));
-  }
-  
-  setError(authResult):String {
-    this.token = JWT(authResult);
-    return this.token.sub;
-  }
-
-  logout() {
-      localStorage.removeItem("id_token");
-      localStorage.removeItem("expires_at");
-  }
-
-  public isLoggedIn() {
-    return moment().isBefore(this.getExpiration());
-  }
-
-  isLoggedOut() {
-      return !this.isLoggedIn();
-  }
-
-  getExpiration() {
-      const expiration = localStorage.getItem("expires_at");
-      const expiresAt = JSON.parse(expiration);
-      return moment.unix(expiresAt);
-  }
-
-  getTokenId(){
-    const token = localStorage.getItem("id_token");
-    return JSON.parse(token).sub;
   }
 
 }

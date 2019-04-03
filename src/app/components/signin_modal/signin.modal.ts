@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'signin-modal',
@@ -16,7 +17,10 @@ export class SigninModal implements OnInit {
   provinces: Array<String>;
   sates: Array<String>;
 
-  constructor(modalCtrl: ModalController, private formBuilder: FormBuilder) {
+  //log in feedback
+  errorString: String;
+
+  constructor(modalCtrl: ModalController, private formBuilder: FormBuilder, private authService: AuthService) {
     this.modalCtrl = modalCtrl;
     this.isCountryChosen = false;
     this.isStateProvChosen = false;
@@ -143,6 +147,17 @@ export class SigninModal implements OnInit {
   }
 
   submit(){
+    this.errorString = "";
+
+    // this.authService.login(JSON.stringify(this.loginForm.value)).subscribe(loginInfo => {
+    //   if (loginInfo.valid){
+    //     this.authService.setSession(loginInfo.token);
+    //     this.modalCtrl.dismiss({closeEvent: "submit"});
+    //   }
+    //   else {
+    //     this.errorString = this.authService.setError(loginInfo.token);
+    //   }
+    // }, err => this.errorString = err);
     console.log(this.signinForm.value);
     this.modalCtrl.dismiss({closeEvent: "submit"});
   }

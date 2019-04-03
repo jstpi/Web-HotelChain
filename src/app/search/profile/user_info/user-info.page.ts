@@ -36,7 +36,7 @@ export class UserInfoPage implements OnInit {
     this.isStateProvChosen = false;
     this.isCAN = false;
     this.editUserForm = this.formBuilder.group({
-      user: [this.user.user, Validators.required],
+      email: [this.user.email, Validators.required],
       fullName: [this.user.full_name, Validators.required],
       sin: [this.user.sin, Validators.required],
       country: [this.user.address.country],
@@ -126,7 +126,7 @@ export class UserInfoPage implements OnInit {
     else {
       this.isEditMode = true;
       this.editUserForm = this.formBuilder.group({
-        user: [this.user.user, Validators.required],
+        email: [this.user.email, Validators.required],
         fullName: [this.user.full_name, Validators.required],
         sin: [this.user.sin, Validators.required],
         country: [this.user.address.country],

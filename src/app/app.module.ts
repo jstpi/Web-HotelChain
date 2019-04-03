@@ -17,6 +17,7 @@ import { SigninModal } from '../app/components/signin_modal/signin.modal';
 import { MainPopover } from './components/main_popover/main.popover';
 import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './services/auth.interceptor.service';
+import { UserInfoService } from './services/user-info.service';
 
 @NgModule({
   declarations: [AppComponent, LoginModal, SigninModal, MainPopover],
@@ -34,6 +35,7 @@ import { AuthInterceptor } from './services/auth.interceptor.service';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     AuthService,
+    UserInfoService
   ],
   bootstrap: [AppComponent]
 })

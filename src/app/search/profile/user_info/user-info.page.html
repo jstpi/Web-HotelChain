@@ -17,7 +17,7 @@
                 <p>User</p>
             </ion-col>
             <ion-col>
-                <p *ngIf="!isEditMode">{{user.user}}</p>
+                <p *ngIf="!isEditMode">{{user.email}}</p>
                 <ion-item *ngIf="isEditMode">
                     <ion-input formControlName="user"></ion-input>
                 </ion-item>

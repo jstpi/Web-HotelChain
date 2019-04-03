@@ -3,7 +3,7 @@ import { Book } from './book.vm';
 import { Address } from './address.vm';
 
 export class Customer {
-    user: string;
+    email: string;
     sin: string;
     full_name: string;
     address: Address;
@@ -11,12 +11,12 @@ export class Customer {
     rents: Rent[];
     books: Book[];
     constructor(
-        user: string, 
+        email: string, 
         sin: string, 
         full_name: string, 
         address: Address,
         date_of_registration: string) {
-        this.user = user;
+        this.email = email;
         this.sin = sin;
         this.full_name = full_name;
         this.address = address;
