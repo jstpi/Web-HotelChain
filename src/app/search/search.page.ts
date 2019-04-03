@@ -96,7 +96,7 @@ export class SearchPage implements OnInit {
   onSearch(city: string){
     this.errorString2 = "";
     let cityObj = {
-      address: city
+      hotel_address: city
     }
     this.searchHotelService.getHotels(JSON.stringify(cityObj)).subscribe(hotels => {
       console.log(hotels);
