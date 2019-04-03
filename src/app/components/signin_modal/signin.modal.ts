@@ -151,7 +151,7 @@ export class SigninModal implements OnInit {
     this.errorString = "";
     let address = new Address(this.signinForm.value.country, this.signinForm.value.state_province, this.signinForm.value.city, this.signinForm.value.street, this.signinForm.value.postalCode);
     let signinObj = {
-      email: this.signinForm.value.email,
+      email: this.signinForm.value.user,
       password: this.signinForm.value.pass,
       full_name: this.signinForm.value.fullName,
       sin: this.signinForm.value.sin,
