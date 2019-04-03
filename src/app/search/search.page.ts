@@ -11,6 +11,7 @@ import { Employee } from '../objects/employee.vm';
 import { Admin } from '../objects/admin.vm';
 import { Hotel } from '../objects/hotel.vm';
 import { Chain } from '../objects/chain.vm';
+import { SearchHotelService } from '../services/search-hotel.service';
 
 @Component({
   selector: 'app-search',
@@ -20,6 +21,7 @@ import { Chain } from '../objects/chain.vm';
 export class SearchPage implements OnInit {
   isLogedIn: Boolean;
   errorString: string;
+  errorString2: string;
   userType: string;
   user: Customer;
   employee: Employee;
@@ -29,7 +31,8 @@ export class SearchPage implements OnInit {
     public modalCtrl: ModalController,
     public popoverController: PopoverController,
     private authService: AuthService,
-    private userInfoService: UserInfoService) { 
+    private userInfoService: UserInfoService,
+    private searchHotelService: SearchHotelService) { 
     this.isLogedIn = false;
     this.errorString = "";
     this.user = new Customer("", "", "", new Address("", "", "", "", ""), "");
@@ -90,11 +93,22 @@ export class SearchPage implements OnInit {
     });
   }
 
+  onSearch(city: string){
+    this.errorString2 = "";
+    let cityObj = {
+      address: city
+    }
+    this.searchHotelService.getHotels(JSON.stringify(cityObj)).subscribe(hotels => {
+      console.log(hotels);
+    }, err => {
+      this.errorString2 = err;
+    });
+  }
+
   // get the customer, employee or admin
   private getUser(){
     this.errorString = "";
     this.userType = this.authService.getTokenRole();
-    console.log(this.userType);
     let tokenSin = {
       sin: this.authService.getTokenId()
     }

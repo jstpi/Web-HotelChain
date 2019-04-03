@@ -18,6 +18,7 @@ import { MainPopover } from './components/main_popover/main.popover';
 import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './services/auth.interceptor.service';
 import { UserInfoService } from './services/user-info.service';
+import { SearchHotelService } from './services/search-hotel.service';
 
 @NgModule({
   declarations: [AppComponent, LoginModal, SigninModal, MainPopover],
@@ -35,7 +36,8 @@ import { UserInfoService } from './services/user-info.service';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     AuthService,
-    UserInfoService
+    UserInfoService,
+    SearchHotelService
   ],
   bootstrap: [AppComponent]
 })

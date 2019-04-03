@@ -36,8 +36,13 @@
             <ion-col align-self-center>
               <ion-item id="main_input">
                 <ion-input placeholder="Ottawa"></ion-input>
-                <ion-button id="search_button" shape="round" clear item-right>Search</ion-button>
+                <ion-button id="search_button" shape="round" (click)="onSearch('Ottawa')" clear item-right>Search</ion-button>
               </ion-item>
+              <div id="error_div" *ngIf="errorString != ''">
+                <ion-text color="danger">
+                    {{errorString}}
+                </ion-text>
+              </div>
             </ion-col>
           </ion-row>
         </ion-grid>
