@@ -12,6 +12,8 @@ import { Admin } from '../objects/admin.vm';
 import { Hotel } from '../objects/hotel.vm';
 import { Chain } from '../objects/chain.vm';
 import { SearchHotelService } from '../services/search-hotel.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -19,6 +21,7 @@ import { SearchHotelService } from '../services/search-hotel.service';
   styleUrls: ['./search.page.scss'],
 })
 export class SearchPage implements OnInit {
+  private searchForm : FormGroup;
   isLogedIn: Boolean;
   errorString: string;
   errorString2: string;
@@ -30,9 +33,13 @@ export class SearchPage implements OnInit {
   constructor(
     public modalCtrl: ModalController,
     public popoverController: PopoverController,
+    private formBuilder: FormBuilder,
     private authService: AuthService,
     private userInfoService: UserInfoService,
-    private searchHotelService: SearchHotelService) { 
+    private router: Router) { 
+      this.searchForm = this.formBuilder.group({
+        address: ['Ottawa', Validators.required]
+      });
     this.isLogedIn = false;
     this.errorString = "";
     this.user = new Customer("", "", "", new Address("", "", "", "", ""), "");
@@ -93,16 +100,8 @@ export class SearchPage implements OnInit {
     });
   }
 
-  onSearch(city: string){
-    this.errorString2 = "";
-    let cityObj = {
-      address: city
-    }
-    this.searchHotelService.getHotels(JSON.stringify(cityObj)).subscribe(hotels => {
-      console.log(hotels);
-    }, err => {
-      this.errorString2 = err;
-    });
+  onSearch(){
+    this.router.navigate(['search', {city: this.searchForm.value}])
   }
 
   // get the customer, employee or admin
