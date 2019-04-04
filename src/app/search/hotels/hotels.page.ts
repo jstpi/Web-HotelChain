@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { SearchHotelService } from 'src/app/services/search-hotel.service';
-import { switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Hotel } from 'src/app/objects/hotel.vm';
+import { Address } from 'src/app/objects/address.vm';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-hotels',
@@ -10,26 +11,76 @@ import { Observable } from 'rxjs';
   styleUrls: ['./hotels.page.scss'],
 })
 export class HotelsPage implements OnInit {
+  private filterForm : FormGroup;
   errorString: string;
-  city: string;
+  hotels: Hotel[];
+  sortedHotels: Hotel[];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private searchHotelService: SearchHotelService) {
+    private searchHotelService: SearchHotelService,
+    private formBuilder: FormBuilder) {
       this.errorString = "";
-      this.city = "";
+      this.hotels = [];
+      this.filterForm = this.formBuilder.group({
+        area: [''],
+        capacity: ["0"],
+        rating: [0],
+        price: [500],
+        hotel_chain: ['']
+      });
+      this.hotels.push(new Hotel("test chain", "hotel 123", 4, 40, new Address("CAN", "Ontario", "Ottawa", "", ""), "test@mail.com", [""], 100, [3, 4]));
+      this.sortedHotels  = Object.assign([], this.hotels);
   }
 
   ngOnInit() {
     this.errorString = "";
+    let area = this.route.snapshot.params['city'];
     let address={
       hotel_address: this.route.snapshot.params['city']
     }
     this.searchHotelService.getHotels(JSON.stringify(address)).subscribe(hotels => {
-      console.log(hotels);
+      if (hotels != null){
+        hotels.forEach(hotel => {
+          // TO CHANGE
+          this.hotels.push(new Hotel(hotel.chain_name, hotel.hotel_id, hotel.rating, hotel.number_of_rooms, new Address("", "", "", "", ""), hotel.contact_email_address, [""], 0, [0]));
+        }); 
+        this.sortedHotels  = Object.assign([], this.hotels);
+        console.log(this.hotels);
+      }
+      else {
+        this.errorString = "No hotel was founded";
+      }
     }, err => {
       this.errorString = err;
+    });
+
+    this.filterForm.patchValue({
+      area: area,
+    });
+
+    this.onFilter();
+  }
+
+  onFilter(){
+    let capacity = parseInt(this.filterForm.value.capacity);
+    this.sortedHotels = this.filterHotels(this.filterForm.value.hotel_chain, capacity, this.filterForm.value.rating, this.filterForm.value.price);
+  }
+
+  private filterHotels(hotel_chain: string, capacity: number, rating: number, price: number): Hotel[] {
+    return this.hotels.filter(hotel => {
+      let hotelChainFilter = hotel.chain_name.toLowerCase().indexOf(hotel_chain.toLowerCase()) > -1;
+      let capacityFilter = true;
+      if (capacity != 0){
+        capacityFilter = hotel.capacities.indexOf(capacity) > -1;
+      }
+      let ratingFilter = rating <= hotel.rating;
+      let priceFilter = true;
+      if (price != 500){
+        priceFilter = price >= hotel.minPrice;
+      }
+      return hotelChainFilter && capacityFilter && ratingFilter && priceFilter;
     });
   }
 

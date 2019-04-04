@@ -22,9 +22,8 @@ export class UserRoomPage implements OnInit {
     let address = new Address("CAN", "Ontario", "Ottawa", "7, Main St.", "K0A 1M0");
     this.user = new Customer("jstpi047", "23434654", "Jérémie St-Pierre", address, today.toISOString());
     // hardcoded data
-    let chain = new Chain("Travelodge", new Address("CAN", "Ontario", "Casselman", "7, Main St.", "K0A 1M0"), 5, ["test@gmail.com"], ["613-894-1079"]);
     let address2 = new Address("CAN", "Ontario", "Casselman", "7, Main St.", "K0A 1M0");
-    let hotel = new Hotel(chain, "test123", 4, 20, address2, "test@gmail.com", ["819-213-9990"]);
+    let hotel = new Hotel("Travelodge", "test123", 4, 20, address2, "test@gmail.com", ["819-213-9990"], 0, [0]);
     let rooms: Room[];
     rooms = [
       new Room(hotel, 3, 40, 2, "city", true, [], []), 
