@@ -95,14 +95,15 @@ export class SearchPage implements OnInit {
     await modal.present();
     return await modal.onWillDismiss().then((data?)=>{
       if (data.data !== undefined){
-
+        if (data.data.closeEvent == "submit"){
+          this.getUser();
+        }
       }
     });
   }
 
   onSearch(){
     this.router.navigate(['search', {city: this.searchForm.value.address}])
-
   }
 
   // get the customer, employee or admin

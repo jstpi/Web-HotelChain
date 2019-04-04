@@ -24,14 +24,12 @@ export class HotelsPage implements OnInit {
       this.errorString = "";
       this.hotels = [];
       this.filterForm = this.formBuilder.group({
-        area: [''],
+        area: ['', Validators.required],
         capacity: ["0"],
         rating: [0],
         price: [500],
         hotel_chain: ['']
       });
-      this.hotels.push(new Hotel("test chain", "hotel 123", 4, 40, new Address("CAN", "Ontario", "Ottawa", "", ""), "test@mail.com", [""], 100, [3, 4]));
-      this.sortedHotels  = Object.assign([], this.hotels);
   }
 
   ngOnInit() {
@@ -41,13 +39,13 @@ export class HotelsPage implements OnInit {
       hotel_address: this.route.snapshot.params['city']
     }
     this.searchHotelService.getHotels(JSON.stringify(address)).subscribe(hotels => {
+      console.log(hotels);
       if (hotels != null){
         hotels.forEach(hotel => {
           // TO CHANGE
-          this.hotels.push(new Hotel(hotel.chain_name, hotel.hotel_id, hotel.rating, hotel.number_of_rooms, new Address("", "", "", "", ""), hotel.contact_email_address, [""], 0, [0]));
+          this.hotels.push(new Hotel(hotel.chain_name, hotel.hotel_id, hotel.rating, hotel.number_of_rooms, new Address("", "", "", "", ""), hotel.contact_email_address, [""], hotel.minPrice, [0]));
         }); 
         this.sortedHotels  = Object.assign([], this.hotels);
-        console.log(this.hotels);
       }
       else {
         this.errorString = "No hotel was founded";
@@ -63,6 +61,30 @@ export class HotelsPage implements OnInit {
     this.onFilter();
   }
 
+  refresh(){
+    this.hotels = [];
+    let address={
+      hotel_address: this.filterForm.value.area
+    }
+    this.searchHotelService.getHotels(JSON.stringify(address)).subscribe(hotels => {
+      console.log(hotels);
+      if (hotels != null){
+        hotels.forEach(hotel => {
+          // TO CHANGE
+          this.hotels.push(new Hotel(hotel.chain_name, hotel.hotel_id, hotel.rating, hotel.number_of_rooms, new Address("", "", "", "", ""), hotel.contact_email_address, [""], hotel.minPrice, hotel.capacities));
+        }); 
+        this.sortedHotels  = Object.assign([], this.hotels);
+      }
+      else {
+        this.errorString = "No hotel was founded";
+      }
+    }, err => {
+      this.errorString = err;
+    });
+
+    this.onFilter();
+  }
+
   onFilter(){
     let capacity = parseInt(this.filterForm.value.capacity);
     this.sortedHotels = this.filterHotels(this.filterForm.value.hotel_chain, capacity, this.filterForm.value.rating, this.filterForm.value.price);
@@ -72,7 +94,7 @@ export class HotelsPage implements OnInit {
     return this.hotels.filter(hotel => {
       let hotelChainFilter = hotel.chain_name.toLowerCase().indexOf(hotel_chain.toLowerCase()) > -1;
       let capacityFilter = true;
-      if (capacity != 0){
+      if (capacity != 0 || hotel.capacities != null){
         capacityFilter = hotel.capacities.indexOf(capacity) > -1;
       }
       let ratingFilter = rating <= hotel.rating;

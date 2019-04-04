@@ -7,7 +7,7 @@
     </ion-toolbar>
 </ion-header>
 <ion-content padding>
-    <form [formGroup]="filterForm" (ngSubmit)="submit()">
+    <form [formGroup]="filterForm" (ngSubmit)="refresh()">
         <ion-list>
             <ion-list-header>
                 <ion-label>Filter</ion-label>
@@ -15,6 +15,7 @@
             <ion-item>
                 <ion-label>Area: </ion-label>
                 <ion-input placeholder="e.g Ottawa" formControlName="area"></ion-input>
+                <ion-button shape="round" type="submit" [disabled]="!filterForm.valid" clear item-right>Refresh</ion-button>
             </ion-item>
             <ion-item>
                 <ion-label>Capacity: </ion-label>
@@ -59,8 +60,9 @@
                         Rating: {{hotel.rating}} star
                     </p>
                     <p>
-                        Starting: XXX $
+                        Starting: {{hotel.minPrice}} $
                     </p>
+                    <ion-button shape="round" clear item-right>Book a room</ion-button>
             </ion-label>
         </ion-item>
     </ion-list>
