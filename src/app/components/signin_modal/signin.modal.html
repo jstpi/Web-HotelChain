@@ -8,6 +8,11 @@
     </ion-toolbar>
   </ion-header>
   <ion-content padding>
+    <div id="error_div" *ngIf="errorString != ''">
+      <ion-text color="danger">
+          {{errorString}}
+      </ion-text>
+    </div>
     <form [formGroup]="signinForm" (ngSubmit)="submit()">
       <ion-list>
         <ion-list-header>

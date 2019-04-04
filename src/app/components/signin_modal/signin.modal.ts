@@ -26,6 +26,7 @@ export class SigninModal implements OnInit {
     this.isCountryChosen = false;
     this.isStateProvChosen = false;
     this.isCAN = false;
+    this.errorString = "";
     this.signinForm = this.formBuilder.group({
       user: ['', Validators.required],
       pass: ['', Validators.required],
@@ -158,21 +159,27 @@ export class SigninModal implements OnInit {
       address: address.format()
     }
     let loginObj = {
-      email: this.signinForm.value.email,
-      password: this.signinForm.value.pass
+      email: this.signinForm.value.user,
+      password: this.signinForm.value.pass,
+      type: "Customer"
     }
 
     this.authService.signin(JSON.stringify(signinObj)).subscribe(signInInfo => {
       console.log(signInInfo);
-      this.authService.login(JSON.stringify(loginObj)).subscribe(loginInfo => {
-        if (loginInfo.valid){
-          this.authService.setSession(loginInfo.token);
-          this.modalCtrl.dismiss({closeEvent: "submit"});
-        }
-        else {
-          this.errorString = this.authService.setError(loginInfo.token);
-        }
-      }, err => this.errorString = err);
+      if (signInInfo.valid){
+        this.authService.login(JSON.stringify(loginObj)).subscribe(loginInfo => {
+          if (loginInfo.valid){
+            this.authService.setSession(loginInfo.token);
+            this.modalCtrl.dismiss({closeEvent: "submit"});
+          }
+          else {
+            this.errorString = this.authService.setError(loginInfo.token);
+          }
+        }, err => this.errorString = err);
+      }
+      else {
+        this.errorString = signInInfo.error;
+      }
     }, err => this.errorString = err);
   }
 
