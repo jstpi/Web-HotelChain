@@ -20,7 +20,6 @@ import { AuthInterceptor } from './services/auth.interceptor.service';
 import { UserInfoService } from './services/user-info.service';
 import { SearchHotelService } from './services/search-hotel.service';
 import { SearchRoomsService } from './services/search-rooms.service';
-import { DatePickerModule } from 'ionic4-date-picker';
 
 @NgModule({
   declarations: [AppComponent, LoginModal, SigninModal, MainPopover],
@@ -30,8 +29,7 @@ import { DatePickerModule } from 'ionic4-date-picker';
     IonicModule.forRoot(), 
     AppRoutingModule,
     FormsModule, ReactiveFormsModule,
-    HttpClientModule,
-    DatePickerModule
+    HttpClientModule
   ],
   providers: [
     StatusBar,
