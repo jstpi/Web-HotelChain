@@ -26,10 +26,10 @@
     </ion-button>
   </div>
 </div>
-<div id="title_div">
-  <div id="title_center_div">
-    <div *ngIf="userType == 'Customer'">
-      <h1 id="title">E-Hotel</h1>
+<div class="title_div" *ngIf="userType == 'Customer'">
+  <div class="title_center_div">
+    <div>
+      <h1 class="title">E-Hotel</h1>
       <div id="input_center_div">
         <ion-grid>
           <ion-row justify-content-center>
@@ -50,8 +50,33 @@
         </ion-grid>
       </div>
     </div>
-    <div *ngIf="userType == 'Employee' || userType == 'Admin'">
-      <p>YO</p>
+  </div>
+</div>
+<div class="title_div" *ngIf="userType == 'Admin' || userType == 'Employee'">
+  <div class="title_center_div">
+    <div>
+      <h1 class="title">(# Chain name)</h1>
+      <div id="list_center_div">
+        <ion-grid>
+          <ion-row justify-content-center>
+            <ion-col align-self-center>
+              <ion-list id="main_list">
+                <ion-item>
+                  <ion-label>
+                    (# hotel id)
+                  </ion-label>
+                  <ion-button id="manage_button" shape="round" clear item-right href="/manage/tabs/info">Manage</ion-button>
+                </ion-item>
+              </ion-list>
+              <div id="error_div" *ngIf="errorString != ''">
+                <ion-text color="danger">
+                    {{errorString}}
+                </ion-text>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
     </div>
   </div>
 </div>
