@@ -66,8 +66,10 @@
                     (# hotel id)
                   </ion-label>
                   <ion-button id="manage_button" shape="round" clear item-right href="/manage/tabs/info">Manage</ion-button>
+                  <ion-button color="danger" shape="round" clear item-right (click)="onRemoveHotelConfirm()"><ion-icon name="remove"></ion-icon></ion-button>
                 </ion-item>
               </ion-list>
+              <ion-button *ngIf="userType == 'Admin'" shape="round" clear item-right (click)="onAddHotel()"><ion-icon name="add"></ion-icon></ion-button>
               <div id="error_div" *ngIf="errorString != ''">
                 <ion-text color="danger">
                     {{errorString}}

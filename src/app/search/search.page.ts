@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, PopoverController } from '@ionic/angular';
+import { ModalController, PopoverController, AlertController } from '@ionic/angular';
 import { LoginModal } from '../components/login_modal/login.modal';
 import { SigninModal } from '../components/signin_modal/signin.modal';
 import { MainPopover } from '../components/main_popover/main.popover';
@@ -14,6 +14,7 @@ import { Chain } from '../objects/chain.vm';
 import { SearchHotelService } from '../services/search-hotel.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AddHotelModal } from '../components/add-hotel_modal/add-hotel.modal';
 
 @Component({
   selector: 'app-search',
@@ -36,6 +37,7 @@ export class SearchPage implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private userInfoService: UserInfoService,
+    private alertController: AlertController,
     private router: Router) {
       this.searchForm = this.formBuilder.group({
         address: ['', Validators.required]
@@ -100,6 +102,41 @@ export class SearchPage implements OnInit {
         }
       }
     });
+  }
+
+  async onAddHotel(){
+    let modal = await this.modalCtrl.create({
+      component: AddHotelModal,
+    });
+    await modal.present();
+    return await modal.onWillDismiss().then((data?)=>{
+      if (data.data !== undefined){
+      }
+    });
+  }
+
+  async onRemoveHotelConfirm() {
+    const alert = await this.alertController.create({
+      header: 'Delete: (hotel ID)',
+      message: 'The deletion of this hotel will remove all rooms associated',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('CANCEL');
+          }
+        }, {
+          text: 'Delete',
+          handler: () => {
+            console.log('DELETE (hotel Id)');
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   onSearch(){

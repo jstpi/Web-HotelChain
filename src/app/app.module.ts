@@ -20,10 +20,11 @@ import { AuthInterceptor } from './services/auth.interceptor.service';
 import { UserInfoService } from './services/user-info.service';
 import { SearchHotelService } from './services/search-hotel.service';
 import { SearchRoomsService } from './services/search-rooms.service';
+import { AddHotelModal } from './components/add-hotel_modal/add-hotel.modal';
 
 @NgModule({
-  declarations: [AppComponent, LoginModal, SigninModal, MainPopover],
-  entryComponents: [LoginModal, SigninModal, MainPopover],
+  declarations: [AppComponent, LoginModal, SigninModal, MainPopover, AddHotelModal],
+  entryComponents: [LoginModal, SigninModal, MainPopover, AddHotelModal],
   imports: [
     BrowserModule, 
     IonicModule.forRoot(), 
