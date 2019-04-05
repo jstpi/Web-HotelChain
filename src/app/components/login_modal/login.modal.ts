@@ -43,12 +43,6 @@ export class LoginModal implements OnInit {
     );
   }
 
-  ngOnDestroy(){
-    if (!this.isExitByButton){
-      this.modalCtrl.dismiss({closeEvent: "back"});
-    }
-  }
-
   back(){
     this.isExitByButton = true;
     this.modalCtrl.dismiss({closeEvent: "back"});

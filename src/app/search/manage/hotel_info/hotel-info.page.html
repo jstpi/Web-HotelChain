@@ -7,5 +7,136 @@
     </ion-toolbar>
 </ion-header>
 <ion-content padding>
-
+<form [formGroup]="editHotelForm" (ngSubmit)="submit()">
+    <ion-grid>
+        <ion-row class="rowHeader">
+            <p>Hotel Information</p>
+        </ion-row>
+        <ion-row>
+            <ion-col class="colHeader" size="3">
+                <p>Hotel ID</p>
+            </ion-col>
+            <ion-col>
+                <p *ngIf="!isEditMode">{{hotel.hotel_id}}</p>
+                <ion-item *ngIf="isEditMode">
+                    <ion-input formControlName="hotel_id"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col class="colHeader" size="3">
+                <p>Number of Rooms</p>
+            </ion-col>
+            <ion-col>
+                <p *ngIf="!isEditMode">{{hotel.number_of_rooms}}</p>
+                <ion-item *ngIf="isEditMode">
+                    <ion-input formControlName="number_of_rooms"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col class="colHeader" size="3">
+                <p>Rating</p>
+            </ion-col>
+            <ion-col>
+                <p *ngIf="!isEditMode">{{hotel.rating}}</p>
+                <ion-item *ngIf="isEditMode">
+                    <ion-input *ngIf="isEditMode" formControlName="rating"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col class="colHeader" size="3">
+                <p>Contact email address</p>
+            </ion-col>
+            <ion-col>
+                <p *ngIf="!isEditMode">{{hotel.contact_email_address}}</p>
+                <ion-item *ngIf="isEditMode">
+                    <ion-input *ngIf="isEditMode" formControlName="contact_email_address"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col class="colHeader" size="3">
+                <p>Contact phone numbers</p>
+            </ion-col>
+            <ion-col>
+                <div *ngFor="let phone of hotel.contact_phone_numbers">
+                    <p *ngIf="!isEditMode">{{phone}}</p>
+                </div>
+                <div *ngIf="isEditMode">
+                    <div formArrayName="phone_numbers" *ngFor="let phone_number of editHotelForm.get('phone_numbers').controls; let i = index;">
+                        <ion-item [formGroupName]="i">
+                            <ion-label class="inputLabel">phone number #{{i+1}}</ion-label>
+                            <ion-input formControlName="phone_number"></ion-input>
+                            <ion-button *ngIf="i != 0" color="danger" shape="round" clear item-right (click)="removePhoneNumber(i)"><ion-icon name="remove"></ion-icon></ion-button>
+                        </ion-item>
+                    </div>
+                    <ion-button shape="round" clear item-right (click)="addPhoneNumber()"><ion-icon name="add"></ion-icon></ion-button>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row class="rowHeader">
+            <p>Hotel Address</p>
+        </ion-row>
+        <ion-row>
+            <ion-col *ngIf="!isEditMode" class="colHeader" size="3">
+            
+            </ion-col>
+            <ion-col>
+                <p *ngIf="!isEditMode" class="postal-address"> {{hotel.hotel_address.address}}</p>
+                <ion-list *ngIf="isEditMode">
+                    <ion-item>
+                        <ion-label>Country</ion-label>
+                        <ion-select [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One" formControlName="country">
+                        <ion-select-option value="CAN">Canada</ion-select-option>
+                        <ion-select-option value="USA">United States</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                    <ion-item *ngIf="isCountryChosen && isCAN">
+                        <ion-label>Province</ion-label>
+                        <ion-select [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One" formControlName="state_province">
+                        <ion-select-option *ngFor="let province of provinces" value="{{province}}">{{province}}</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                    <ion-item *ngIf="isCountryChosen && !isCAN">
+                        <ion-label>State</ion-label>
+                        <ion-select [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One" formControlName="state_province">
+                        <ion-select-option *ngFor="let state of states" value="{{state}}">{{state}}</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                    <div *ngIf="isStateProvChosen">
+                        <ion-item>
+                            <ion-label class="inputLabel">City</ion-label>
+                            <ion-input formControlName="city"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label class="inputLabel">Street Address</ion-label>
+                            <ion-input formControlName="street"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label class="inputLabel">Postal Code</ion-label>
+                            <ion-input formControlName="postalCode"></ion-input>
+                        </ion-item>
+                    </div>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    </form>
 </ion-content>
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="editMode()">
+        <ion-icon name="create"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="end">
+        <ion-fab-button color="success" type="submit" [disabled]="!editHotelForm.valid" *ngIf="editHotelForm.valid && !editHotelForm.valid">
+            <ion-icon name="checkmark"></ion-icon>
+        </ion-fab-button>
+    </ion-fab-list>
+</ion-fab>
+<ion-fab id="successFab" *ngIf="isEditMode" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="success" type="submit" [disabled]="!editHotelForm.valid" (click)="submit()">
+        <ion-icon name="checkmark"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
