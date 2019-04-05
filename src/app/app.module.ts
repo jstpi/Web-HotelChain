@@ -21,6 +21,7 @@ import { UserInfoService } from './services/user-info.service';
 import { SearchHotelService } from './services/search-hotel.service';
 import { SearchRoomsService } from './services/search-rooms.service';
 import { AddHotelModal } from './components/add-hotel_modal/add-hotel.modal';
+import { BookRoomService } from './services/book-room.service';
 
 @NgModule({
   declarations: [AppComponent, LoginModal, SigninModal, MainPopover, AddHotelModal],
@@ -40,7 +41,8 @@ import { AddHotelModal } from './components/add-hotel_modal/add-hotel.modal';
     AuthService,
     UserInfoService,
     SearchHotelService,
-    SearchRoomsService
+    SearchRoomsService,
+    BookRoomService
   ],
   bootstrap: [AppComponent]
 })

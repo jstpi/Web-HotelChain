@@ -28,7 +28,7 @@ export class HotelsPage implements OnInit {
         area: ['', Validators.required],
         capacity: ["0"],
         rating: [0],
-        price: [500],
+        price: [80],
         hotel_chain: ['']
       });
   }
@@ -108,7 +108,7 @@ export class HotelsPage implements OnInit {
       }
       let ratingFilter = rating <= hotel.rating;
       let priceFilter = true;
-      if (price != 500){
+      if (price != 80){
         priceFilter = price >= hotel.minPrice;
       }
       return hotelChainFilter && capacityFilter && ratingFilter && priceFilter;

@@ -14,7 +14,7 @@
             </ion-list-header>
             <ion-item>
                 <ion-label>Price ($/night): </ion-label>
-                <ion-range min="80" max="500" step="1" pin="true" formControlName="price" (ionChange)="onFilter()">
+                <ion-range min="20" max="80" step="1" pin="true" formControlName="price" (ionChange)="onFilter()">
                     <ion-icon size="small" slot="start" name="cash"></ion-icon>
                     <ion-icon slot="end" name="cash"></ion-icon>
                 </ion-range>
@@ -47,9 +47,23 @@
         <ion-list-header>
             <ion-label>Rooms</ion-label>
         </ion-list-header>
-        <ion-item *ngFor="let room of sortedRooms">
+        <ion-item *ngFor="let room of sortedRooms; let i = index">
             <ion-thumbnail class="hotelThumbnail" slot="start">
-                <img src="assets/img/hotel.png">
+                <div *ngIf="room.capacity == 1">
+                    <img src="assets/img/room-1.png">
+                </div>
+                <div *ngIf="room.capacity == 2">
+                    <img src="assets/img/room-2.png">
+                </div>
+                <div *ngIf="room.capacity == 3">
+                    <img src="assets/img/room-3.png">
+                </div>
+                <div *ngIf="room.capacity == 4">
+                    <img src="assets/img/room-4.png">
+                </div>
+                <div *ngIf="room.capacity > 4">
+                    <img src="assets/img/room-5.png">
+                </div>
             </ion-thumbnail>
             <ion-label>Room #{{room.number}}
                     <p>
@@ -61,7 +75,7 @@
                     <p>
                         View Type: {{room.view_type}}
                     </p>
-                    <ion-button shape="round" clear item-right><ion-icon name="add"></ion-icon></ion-button>
+                    <ion-button shape="round" clear item-right (click)="onBook(i)"><ion-icon name="add"></ion-icon>Book</ion-button>
             </ion-label>
         </ion-item>
     </ion-list>
