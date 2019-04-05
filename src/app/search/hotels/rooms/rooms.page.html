@@ -13,22 +13,6 @@
                 <ion-label>Filter</ion-label>
             </ion-list-header>
             <ion-item>
-                <ion-label>Area: </ion-label>
-                <ion-input placeholder="e.g Ottawa" formControlName="area"></ion-input>
-                <ion-button shape="round" type="submit" [disabled]="!filterForm.valid" clear item-right>Refresh</ion-button>
-            </ion-item>
-            <ion-item>
-                <ion-label>Chain name: </ion-label>
-                <ion-input placeholder="e.g Travelodge" formControlName="hotel_chain" (ionChange)="onFilter()"></ion-input>
-            </ion-item>
-            <ion-item>
-                <ion-label>Rating (stars): </ion-label>
-                <ion-range min="0" max="5" step="1" snaps="true" pin="true" formControlName="rating" (ionChange)="onFilter()">
-                    <ion-icon size="small" slot="start" name="star"></ion-icon>
-                    <ion-icon slot="end" name="star"></ion-icon>
-                </ion-range>
-            </ion-item>
-            <ion-item>
                 <ion-label>Price ($/night): </ion-label>
                 <ion-range min="80" max="500" step="1" pin="true" formControlName="price" (ionChange)="onFilter()">
                     <ion-icon size="small" slot="start" name="cash"></ion-icon>
@@ -45,31 +29,49 @@
                     <ion-select-option value="0">any</ion-select-option>
                 </ion-select>
             </ion-item>
+            <ion-item>
+                <ion-label>From: </ion-label>
+                <input type="date" min="{{minFrom}}" formControlName="from">
+                <ion-label>To: </ion-label>
+                <input type="date" min="{{minTo}}" formControlName="to">
+            </ion-item>
+            <div id="refresh_button_div">
+                <ion-button shape="round" type="submit" [disabled]="!filterForm.valid" clear item-right>Refresh</ion-button>
+            </div>
         </ion-list>
     </form>
+    <div>
+        <h1>{{chain_name}}</h1>
+    </div>
     <ion-list *ngIf="errorString == ''">
         <ion-list-header>
-            <ion-label>Results</ion-label>
+            <ion-label>Rooms</ion-label>
         </ion-list-header>
-        <ion-item *ngFor="let hotel of sortedHotels; let i = index">
+        <ion-item *ngFor="let room of sortedRooms">
             <ion-thumbnail class="hotelThumbnail" slot="start">
                 <img src="assets/img/hotel.png">
             </ion-thumbnail>
-            <ion-label>{{hotel.chain_name}} ({{hotel.hotel_address.address}})
+            <ion-label>Room #{{room.number}}
                     <p>
-                        Rating: {{hotel.rating}} star
+                        Price: {{room.price}} $ / night
                     </p>
                     <p>
-                        Starting: {{hotel.minPrice}} $
+                        Capacity: {{room.capacity}}
                     </p>
-                    <ion-button shape="round" clear item-right (click)="onChooseHotel(i)">Book a room</ion-button>
+                    <p>
+                        View Type: {{room.view_type}}
+                    </p>
+                    <ion-button shape="round" clear item-right><ion-icon name="add"></ion-icon></ion-button>
             </ion-label>
         </ion-item>
     </ion-list>
     <div *ngIf="errorString != ''">
         <ion-text color="danger">{{errorString}}</ion-text>
     </div>
-    <div *ngIf="errorString == '' && sortedHotels.length == 0">
-        <ion-text color="danger">No hotel founded for this search condition</ion-text>
+    <div *ngIf="errorString == '' && !isRefreshed">
+        <ion-text color="danger">Please submit a (from) and (to) date to begin searching for rooms</ion-text>
+    </div>
+    <div *ngIf="errorString == '' && isRefreshed && sortedRooms.length == 0">
+        <ion-text color="danger">No rooms founded for this search condition</ion-text>
     </div>
 </ion-content>

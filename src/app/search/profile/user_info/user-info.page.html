@@ -19,7 +19,7 @@
             <ion-col>
                 <p *ngIf="!isEditMode">{{user.email}}</p>
                 <ion-item *ngIf="isEditMode">
-                    <ion-input formControlName="user"></ion-input>
+                    <ion-input formControlName="email"></ion-input>
                 </ion-item>
             </ion-col>
         </ion-row>
@@ -53,7 +53,7 @@
             
             </ion-col>
             <ion-col>
-                <p *ngIf="!isEditMode" class="postal-address"> {{user.address.street}} <br> {{user.address.city}}, {{user.address.state_province}} {{user.address.country}} {{user.address.postalCode}} </p>
+                <p *ngIf="!isEditMode" class="postal-address"> {{user.address.address}}</p>
                 <ion-list *ngIf="isEditMode">
                     <ion-item>
                         <ion-label>Country</ion-label>

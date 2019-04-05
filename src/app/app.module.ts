@@ -19,6 +19,8 @@ import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './services/auth.interceptor.service';
 import { UserInfoService } from './services/user-info.service';
 import { SearchHotelService } from './services/search-hotel.service';
+import { SearchRoomsService } from './services/search-rooms.service';
+import { DatePickerModule } from 'ionic4-date-picker';
 
 @NgModule({
   declarations: [AppComponent, LoginModal, SigninModal, MainPopover],
@@ -28,7 +30,8 @@ import { SearchHotelService } from './services/search-hotel.service';
     IonicModule.forRoot(), 
     AppRoutingModule,
     FormsModule, ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    DatePickerModule
   ],
   providers: [
     StatusBar,
@@ -37,7 +40,8 @@ import { SearchHotelService } from './services/search-hotel.service';
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     AuthService,
     UserInfoService,
-    SearchHotelService
+    SearchHotelService,
+    SearchRoomsService
   ],
   bootstrap: [AppComponent]
 })

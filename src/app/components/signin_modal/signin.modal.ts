@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
-import { Address } from 'src/app/objects/address.vm';
+import { Address2 } from 'src/app/objects/address2.vm';
 
 @Component({
   selector: 'signin-modal',
@@ -150,7 +150,7 @@ export class SigninModal implements OnInit {
 
   submit(){
     this.errorString = "";
-    let address = new Address(this.signinForm.value.country, this.signinForm.value.state_province, this.signinForm.value.city, this.signinForm.value.street, this.signinForm.value.postalCode);
+    let address = new Address2(this.signinForm.value.country, this.signinForm.value.state_province, this.signinForm.value.city, this.signinForm.value.street, this.signinForm.value.postalCode);
     let signinObj = {
       email: this.signinForm.value.user,
       password: this.signinForm.value.pass,

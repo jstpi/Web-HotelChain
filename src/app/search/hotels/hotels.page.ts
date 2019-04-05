@@ -23,6 +23,7 @@ export class HotelsPage implements OnInit {
     private formBuilder: FormBuilder) {
       this.errorString = "";
       this.hotels = [];
+      this.sortedHotels = [];
       this.filterForm = this.formBuilder.group({
         area: ['', Validators.required],
         capacity: ["0"],
@@ -42,8 +43,7 @@ export class HotelsPage implements OnInit {
       console.log(hotels);
       if (hotels != null){
         hotels.forEach(hotel => {
-          // TO CHANGE
-          this.hotels.push(new Hotel(hotel.chain_name, hotel.hotel_id, hotel.rating, hotel.number_of_rooms, new Address("", "", "", "", ""), hotel.contact_email_address, [""], hotel.minPrice, [0]));
+          this.hotels.push(new Hotel(hotel.chain_name, hotel.hotel_id, hotel.rating, hotel.number_of_rooms, new Address(hotel.hotel_address), hotel.contact_email_address, [""], hotel.minPrice, [0]));
         }); 
         this.sortedHotels  = Object.assign([], this.hotels);
       }
@@ -70,8 +70,7 @@ export class HotelsPage implements OnInit {
       console.log(hotels);
       if (hotels != null){
         hotels.forEach(hotel => {
-          // TO CHANGE
-          this.hotels.push(new Hotel(hotel.chain_name, hotel.hotel_id, hotel.rating, hotel.number_of_rooms, new Address("", "", "", "", ""), hotel.contact_email_address, [""], hotel.minPrice, hotel.capacities));
+          this.hotels.push(new Hotel(hotel.chain_name, hotel.hotel_id, hotel.rating, hotel.number_of_rooms, new Address(hotel.hotel_address), hotel.contact_email_address, [""], hotel.minPrice, hotel.capacities));
         }); 
         this.sortedHotels  = Object.assign([], this.hotels);
       }
@@ -88,6 +87,16 @@ export class HotelsPage implements OnInit {
   onFilter(){
     let capacity = parseInt(this.filterForm.value.capacity);
     this.sortedHotels = this.filterHotels(this.filterForm.value.hotel_chain, capacity, this.filterForm.value.rating, this.filterForm.value.price);
+  }
+
+  onChooseHotel(i: number){
+    let capacity = parseInt(this.filterForm.value.capacity);
+    this.router.navigate(['search/room', {
+      hotelId: this.sortedHotels[i].hotel_id,
+      chain_name: this.sortedHotels[i].chain_name,
+      price: this.filterForm.value.price,
+      capacity: capacity,
+    }]);
   }
 
   private filterHotels(hotel_chain: string, capacity: number, rating: number, price: number): Hotel[] {

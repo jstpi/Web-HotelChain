@@ -29,7 +29,7 @@ export class UserInfoPage implements OnInit {
     // TODO: change to a subscription
 
     let today = new Date();
-    let address = new Address("CAN", "Ontario", "Ottawa", "7, Main St.", "K0A 1M0");
+    let address = new Address("Test address");
     this.user = new Customer("jstpi047", "23434654", "Jérémie St-Pierre", address, today.toISOString());
 
     this.isCountryChosen = false;
@@ -39,11 +39,11 @@ export class UserInfoPage implements OnInit {
       email: [this.user.email, Validators.required],
       fullName: [this.user.full_name, Validators.required],
       sin: [this.user.sin, Validators.required],
-      country: [this.user.address.country],
-      state_province: [this.user.address.state_province],
-      city: [this.user.address.city],
-      street: [this.user.address.street],
-      postalCode: [this.user.address.postalCode],
+      country: [""],
+      state_province: [""],
+      city: [""],
+      street: [""],
+      postalCode: [""],
     });
     this.provinces = [
       "Ontario", 
@@ -129,11 +129,11 @@ export class UserInfoPage implements OnInit {
         email: [this.user.email, Validators.required],
         fullName: [this.user.full_name, Validators.required],
         sin: [this.user.sin, Validators.required],
-        country: [this.user.address.country],
-        state_province: [this.user.address.state_province],
-        city: [this.user.address.city],
-        street: [this.user.address.street],
-        postalCode: [this.user.address.postalCode],
+        country: [""],
+        state_province: [""],
+        city: [""],
+        street: [""],
+        postalCode: [""],
       });
     }
   }
@@ -152,19 +152,6 @@ export class UserInfoPage implements OnInit {
   }
 
   private addressInputControl(){
-    if (this.user.address.country != ""){
-      this.isCountryChosen = true;
-      if (this.user.address.country == "CAN"){
-        this.isCAN = true;
-      }
-      else if (this.user.address.country == "USA"){
-        this.isCAN = false;
-      }
-    }
-    if (this.user.address.state_province != ""){
-      this.isStateProvChosen = true;
-    }
-
     let typeControl = this.editUserForm.get('country');
     typeControl.valueChanges.forEach(
       (value: string) => {

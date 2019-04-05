@@ -19,15 +19,14 @@ export class UserRoomPage implements OnInit {
   
   constructor() { 
     let today = new Date();
-    let address = new Address("CAN", "Ontario", "Ottawa", "7, Main St.", "K0A 1M0");
+    let address = new Address("7 Main St, Ottawa, Ontario, CAN, K0A 1M0");
     this.user = new Customer("jstpi047", "23434654", "Jérémie St-Pierre", address, today.toISOString());
     // hardcoded data
-    let address2 = new Address("CAN", "Ontario", "Casselman", "7, Main St.", "K0A 1M0");
-    let hotel = new Hotel("Travelodge", "test123", 4, 20, address2, "test@gmail.com", ["819-213-9990"], 0, [0]);
+    let address2 = new Address("7 Main St, Ottawa, Ontario, CAN, K0A 1M0");
     let rooms: Room[];
     rooms = [
-      new Room(hotel, 3, 40, 2, "city", true, [], []), 
-      new Room(hotel, 1, 40, 3, "beach", true, [], [])
+      new Room(3, "Travelodge", "test123", 40, 2, "city", true, [], []), 
+      new Room(1, "Travelodge", "test123", 40, 3, "beach", true, [], [])
     ]
     this.books = [
       new Book(this.user, rooms[0], "2018-03-16", "2018-04-10", "2018-04-15", false),
