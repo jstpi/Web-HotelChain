@@ -15,6 +15,7 @@ import { SearchHotelService } from '../services/search-hotel.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AddHotelModal } from '../components/add-hotel_modal/add-hotel.modal';
+import { AdminHotelsService } from '../services/admin-hotels.service';
 
 @Component({
   selector: 'app-search',
@@ -30,6 +31,8 @@ export class SearchPage implements OnInit {
   user: Customer;
   employee: Employee;
   admin: Admin;
+  chain_name: string;
+  hotels: Hotel[];
 
   constructor(
     public modalCtrl: ModalController,
@@ -38,6 +41,7 @@ export class SearchPage implements OnInit {
     private authService: AuthService,
     private userInfoService: UserInfoService,
     private alertController: AlertController,
+    private adminHotelsService: AdminHotelsService,
     private router: Router) {
       this.searchForm = this.formBuilder.group({
         address: ['', Validators.required]
@@ -47,6 +51,8 @@ export class SearchPage implements OnInit {
     this.user = new Customer("", "", "", new Address(""), "");
     this.employee = new Employee("", "", "", new Address(""));
     this.admin = new Admin("", "", "");
+    this.chain_name = "";
+    this.hotels = [];
     this.userType = "Customer";
   }
 
@@ -165,6 +171,20 @@ export class SearchPage implements OnInit {
         }
         else if (this.userType == "Admin"){
           this.admin = new Admin(userInfo.sin, userInfo.full_name, userInfo.email);
+          this.adminHotelsService.getAdminHotels(JSON.stringify(tokenSin)).subscribe(hotels => {
+            console.log(hotels);
+            if (hotels != null){
+              hotels.forEach(hotel => {
+                this.hotels.push(new Hotel(hotel.chain_name, hotel.hotel_id, hotel.rating, hotel.number_of_rooms, new Address(hotel.hotel_address), hotel.contact_email_address, [""], hotel.minPrice, hotel.capacities));
+                this.chain_name = hotel.chain_name;
+              }); 
+            }
+            else {
+              this.hotels = [];
+            }
+          }, err => {
+            this.errorString = err;
+          });
         }
         this.isLogedIn = true;
       }

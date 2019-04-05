@@ -55,15 +55,15 @@
 <div class="title_div" *ngIf="userType == 'Admin' || userType == 'Employee'">
   <div class="title_center_div">
     <div>
-      <h1 class="title">(# Chain name)</h1>
+      <h1 class="title">{{chain_name}}</h1>
       <div id="list_center_div">
         <ion-grid>
           <ion-row justify-content-center>
             <ion-col align-self-center>
               <ion-list id="main_list">
-                <ion-item>
+                <ion-item *ngFor="let hotel of hotels">
                   <ion-label>
-                    (# hotel id)
+                    {{hotel.hotel_id}}
                   </ion-label>
                   <ion-button id="manage_button" shape="round" clear item-right href="/manage/tabs/info">Manage</ion-button>
                   <ion-button color="danger" shape="round" clear item-right (click)="onRemoveHotelConfirm()"><ion-icon name="remove"></ion-icon></ion-button>

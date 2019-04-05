@@ -15,7 +15,7 @@
             <ion-item>
                 <ion-label>Area: </ion-label>
                 <ion-input placeholder="e.g Ottawa" formControlName="area"></ion-input>
-                <ion-button shape="round" type="submit" [disabled]="!filterForm.valid" clear item-right>Refresh</ion-button>
+                <ion-button shape="round" [disabled]="!filterForm.valid" clear item-right (click)="refresh()">Refresh</ion-button>
             </ion-item>
             <ion-item>
                 <ion-label>Chain name: </ion-label>

@@ -72,7 +72,7 @@ export class HotelsPage implements OnInit {
         hotels.forEach(hotel => {
           this.hotels.push(new Hotel(hotel.chain_name, hotel.hotel_id, hotel.rating, hotel.number_of_rooms, new Address(hotel.hotel_address), hotel.contact_email_address, [""], hotel.minPrice, hotel.capacities));
         }); 
-        this.sortedHotels  = Object.assign([], this.hotels);
+        this.sortedHotels = Object.assign([], this.hotels);
       }
       else {
         this.errorString = "No hotel was founded";
