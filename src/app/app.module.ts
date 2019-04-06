@@ -29,6 +29,9 @@ import { ManageInfoService } from './services/manage-info.service';
 import { EditUserService } from './services/edit-user.service';
 import { DeleteHotelService } from './services/delete-hotel.service';
 import { EditHotelService } from './services/edit-hotel.service';
+import { HotelRoomsService } from './services/hotel-rooms.service';
+import { HotelBooksService } from './services/hotel-books.service';
+import { HotelRentsService } from './services/hotel-rents.service';
 
 @NgModule({
   declarations: [AppComponent, LoginModal, SigninModal, MainPopover, AddHotelModal],
@@ -56,7 +59,10 @@ import { EditHotelService } from './services/edit-hotel.service';
     ManageInfoService,
     EditUserService,
     DeleteHotelService,
-    EditHotelService
+    EditHotelService,
+    HotelRoomsService,
+    HotelBooksService,
+    HotelRentsService
   ],
   bootstrap: [AppComponent]
 })

@@ -63,6 +63,7 @@ export class SearchPage implements OnInit {
       this.getUser();
     }
     else {
+      this.userType = "Customer";
       this.isLogedIn = false;
     }
   }
