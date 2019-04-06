@@ -43,12 +43,9 @@
                 <p>SIN / SSN</p>
             </ion-col>
             <ion-col>
-                <p *ngIf="!isEditMode && isUser">{{user.sin}}</p>
-                <p *ngIf="!isEditMode && isEmployee">{{employee.sin}}</p>
-                <p *ngIf="!isEditMode && isAdmin">{{admin.sin}}</p>
-                <ion-item *ngIf="isEditMode">
-                    <ion-input *ngIf="isEditMode" formControlName="sin"></ion-input>
-                </ion-item>
+                <p *ngIf="isUser">{{user.sin}}</p>
+                <p *ngIf="isEmployee">{{employee.sin}}</p>
+                <p *ngIf="isAdmin">{{admin.sin}}</p>
             </ion-col>
         </ion-row>
         <ion-row *ngIf="isUser || isEmployee" class="rowHeader">

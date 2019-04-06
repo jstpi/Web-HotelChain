@@ -36,6 +36,7 @@ import { AddRoomService } from './services/add-room.service';
 import { AddRoomModal } from './components/add-room_modal/add-room.modal';
 import { EditRoomModal } from './components/edit-room_modal/edit-room.modal';
 import { EditRoomService } from './services/edit-room.service';
+import { HotelEmployeeService } from './services/hotel-employees.service';
 
 @NgModule({
   declarations: [AppComponent, LoginModal, SigninModal, MainPopover, AddHotelModal, AddRoomModal, EditRoomModal],
@@ -68,7 +69,8 @@ import { EditRoomService } from './services/edit-room.service';
     HotelBooksService,
     HotelRentsService,
     AddRoomService,
-    EditRoomService
+    EditRoomService,
+    HotelEmployeeService
   ],
   bootstrap: [AppComponent]
 })

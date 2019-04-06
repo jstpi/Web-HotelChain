@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, ToastController, NavParams } from '@ionic/angular';
+import { ModalController, ToastController, NavParams, AlertController } from '@ionic/angular';
 import { Validators, FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { AddRoomService } from 'src/app/services/add-room.service';
 import { EditRoomService } from 'src/app/services/edit-room.service';
@@ -26,7 +26,8 @@ export class EditRoomModal implements OnInit {
     private formBuilder: FormBuilder, 
     private editRoomService: EditRoomService, 
     private toastController: ToastController,
-    private navParams: NavParams) {
+    private navParams: NavParams,
+    private alertController: AlertController) {
 
     this.modalCtrl = modalCtrl;
     this.roomForm = this.formBuilder.group({
@@ -135,6 +136,28 @@ export class EditRoomModal implements OnInit {
       }
     }, err => {
       this.errorString = err;
+    });
+  }
+
+  async onRemoveRoomConfirm() {
+    const alert = await this.alertController.create({
+      header: 'Delete: Room #'+this.room_number,
+      message: 'Are you sure you want to delete this room?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('CANCEL');
+          }
+        }, {
+          text: 'Delete',
+          handler: () => {
+            this.onDelete();
+          }
+        }
+      ]
     });
   }
 

@@ -50,7 +50,7 @@ export class UserInfoPage implements OnInit {
     let today = new Date();
     let address = new Address("");
     this.user = new Customer("", "", "", address, today.toISOString());
-    this.employee = new Employee("", "", "", address);
+    this.employee = new Employee("", "", "", address, []);
     this.admin = new Admin("", "", "");
     this.isUser = true;
     this.isEmployee = false;
@@ -62,7 +62,6 @@ export class UserInfoPage implements OnInit {
     this.editUserForm = this.formBuilder.group({
       email: [this.user.email, Validators.required],
       fullName: [this.user.full_name, Validators.required],
-      sin: [this.user.sin, Validators.required],
       country: [""],
       state_province: [""],
       city: [""],
@@ -154,7 +153,7 @@ export class UserInfoPage implements OnInit {
             this.user = new Customer(user.email, user.sin, user.full_name, new Address(user.address), user.date_registration);
           }
           else if (this.authService.getTokenRole() == "Employee"){
-            this.employee = new Employee(user.sin, user.email, user.full_name, new Address(user.address));
+            this.employee = new Employee(user.sin, user.email, user.full_name, new Address(user.address), []);
           }
           else {
             this.admin = new Admin(user.sin, user.full_name, user.email);
@@ -182,7 +181,6 @@ export class UserInfoPage implements OnInit {
         this.editUserForm = this.formBuilder.group({
           email: [this.user.email, Validators.required],
           fullName: [this.user.full_name, Validators.required],
-          sin: [this.user.sin, Validators.required],
           country: [""],
           state_province: [""],
           city: [""],
@@ -194,7 +192,6 @@ export class UserInfoPage implements OnInit {
         this.editUserForm = this.formBuilder.group({
           email: [this.employee.email, Validators.required],
           fullName: [this.employee.full_name, Validators.required],
-          sin: [this.employee.sin, Validators.required],
           country: [""],
           state_province: [""],
           city: [""],
@@ -206,7 +203,6 @@ export class UserInfoPage implements OnInit {
         this.editUserForm = this.formBuilder.group({
           email: [this.admin.email, Validators.required],
           fullName: [this.admin.full_name, Validators.required],
-          sin: [this.admin.sin, Validators.required],
           country: [""],
           state_province: [""],
           city: [""],
@@ -221,50 +217,18 @@ export class UserInfoPage implements OnInit {
   submit(){
     let address = new Address2(this.editUserForm.value.country, this.editUserForm.value.state_province, this.editUserForm.value.city, this.editUserForm.value.street, this.editUserForm.value.postalCode);
     let updateObj = {
-      email: this.editUserForm.value.user,
-      sin: this.editUserForm.value.pass,
+      email: this.editUserForm.value.email,
       full_name: this.editUserForm.value.fullName,
       address: address.format()
     }
-    if (this.isUser){
-      this.editUserService.editUserInfo(JSON.stringify(updateObj)).subscribe(user => {
-        console.log(user);
-        if (user != null){
-          this.editUserToast();
-        }
-        else {
-          this.errorString = "User was not founded";
-        }
-      }, err => {
-        this.errorString = err;
-      });
-    }
-    else if (this.isEmployee){
-      this.editUserService.editEmployeeInfo(JSON.stringify(updateObj)).subscribe(user => {
-        console.log(user);
-        if (user != null){
-          this.editUserToast();
-        }
-        else {
-          this.errorString = "User was not founded";
-        }
-      }, err => {
-        this.errorString = err;
-      });
-    }
-    else {
-      this.editUserService.editAdminInfo(JSON.stringify(updateObj)).subscribe(user => {
-        console.log(user);
-        if (user != null){
-          this.editUserToast();
-        }
-        else {
-          this.errorString = "User was not founded";
-        }
-      }, err => {
-        this.errorString = err;
-      });
-    }
+    console.log(updateObj);
+
+    this.editUserService.editUser(JSON.stringify(updateObj)).subscribe(response => {
+      this.editUserToast();
+      this.ngOnInit();
+    }, err => {
+      this.errorString = err;
+    });
   }
 
   private async editUserToast() {

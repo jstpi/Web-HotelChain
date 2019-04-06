@@ -51,7 +51,7 @@ export class SearchPage implements OnInit {
     this.isLogedIn = false;
     this.errorString = "";
     this.user = new Customer("", "", "", new Address(""), "");
-    this.employee = new Employee("", "", "", new Address(""));
+    this.employee = new Employee("", "", "", new Address(""), []);
     this.admin = new Admin("", "", "");
     this.chain_name = "";
     this.hotels = [];
@@ -206,7 +206,7 @@ export class SearchPage implements OnInit {
           this.user = new Customer(userInfo.email, userInfo.sin, userInfo.full_name, new Address(userInfo.address), userInfo.date_registration);
         }
         else if (this.userType == "Employee"){
-          this.employee = new Employee(userInfo.sin, userInfo.email, userInfo.full_name, new Address(userInfo.address));
+          this.employee = new Employee(userInfo.sin, userInfo.email, userInfo.full_name, new Address(userInfo.address), []);
         }
         else if (this.userType == "Admin"){
           this.hotels = [];

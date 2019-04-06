@@ -7,19 +7,19 @@ import { catchError, retry } from 'rxjs/operators';
 export const TOKEN_NAME: string = 'jwt_token';
 
 @Injectable()
-export class EditUserService {
+export class HotelEmployeeService {
 
-  private url: string = 'http://localhost:8080/SampleWebApp/updateUser';
+  private url: string = 'http://localhost:8080/SampleWebApp/';
 
   constructor(private http: HttpClient) { }
 
-  editUser(userInfo): Observable<any> {
+  getEmployees(hotel): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
       })
     };
-    return this.http.post(this.url, userInfo, httpOptions)
+    return this.http.post(this.url, hotel, httpOptions)
       .pipe(
         catchError(this.handleError)
       );

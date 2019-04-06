@@ -12,10 +12,12 @@ export class Employee {
         sin: string, 
         email: string, 
         full_name: string, 
-        address: Address) {
+        address: Address,
+        roles: string[]) {
         this.email = email;
         this.sin = sin;
         this.full_name = full_name;
         this.address = address;
+        this.roles = roles;
     }
 }
