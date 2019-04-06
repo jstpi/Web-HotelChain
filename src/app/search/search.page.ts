@@ -26,7 +26,6 @@ export class SearchPage implements OnInit {
   private searchForm : FormGroup;
   isLogedIn: Boolean;
   errorString: string;
-  errorString2: string;
   userType: string;
   user: Customer;
   employee: Employee;
@@ -117,6 +116,9 @@ export class SearchPage implements OnInit {
     await modal.present();
     return await modal.onWillDismiss().then((data?)=>{
       if (data.data !== undefined){
+        if (data.data.closeEvent == "addHotel"){
+          this.getUser();
+        }
       }
     });
   }
@@ -170,6 +172,7 @@ export class SearchPage implements OnInit {
           this.employee = new Employee(userInfo.sin, userInfo.email, userInfo.full_name, new Address(userInfo.address));
         }
         else if (this.userType == "Admin"){
+          this.hotels = [];
           this.admin = new Admin(userInfo.sin, userInfo.full_name, userInfo.email);
           this.adminHotelsService.getAdminHotels(JSON.stringify(tokenSin)).subscribe(hotels => {
             console.log(hotels);
