@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastController, ModalController } from '@ionic/angular';
+import { ToastController, ModalController, AlertController } from '@ionic/angular';
 import { Customer } from 'src/app/objects/customer.vm';
 import { Address } from 'src/app/objects/address.vm';
 import { Employee } from 'src/app/objects/employee.vm';
@@ -9,6 +9,7 @@ import { ManageInfoService } from 'src/app/services/manage-info.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HotelEmployeeService } from 'src/app/services/hotel-employees.service';
 import { AddEmployeeModal } from 'src/app/components/add-employee_modal/add-employee.modal';
+import { DeleteEmployeeService } from 'src/app/services/delete-employee.service';
 
 @Component({
   selector: 'app-hotel-employee',
@@ -28,7 +29,10 @@ export class HotelEmployeePage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private hotelEmployeeService: HotelEmployeeService,
-    private modalCtrl: ModalController) {
+    private modalCtrl: ModalController,
+    private alertController: AlertController,
+    private toastController: ToastController,
+    private deleteEmployeeService: DeleteEmployeeService) {
       this.chain_name = "";
       this.hotel_id = "";
       this.errorString = "";
@@ -111,10 +115,61 @@ export class HotelEmployeePage implements OnInit {
     });
   }
 
+  async onRemoveEmployeeConfirm(i: number) {
+    const alert = await this.alertController.create({
+      header: 'Delete: '+this.sortedEmployees[i].full_name,
+      message: 'Are you sure you want to delete this employee?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('CANCEL');
+          }
+        }, {
+          text: 'Delete',
+          handler: () => {
+            this.onDeleteEmployee(i);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  private onDeleteEmployee(i: number){
+    let employeeObj = {
+      hotel_id: this.hotel_id,
+      sin: this.sortedEmployees[i].sin
+    }
+    this.deleteEmployeeService.deleteEmployee(JSON.stringify(employeeObj)).subscribe(deleteResponse => {
+      console.log(deleteResponse);
+      if (deleteResponse != null){
+        this.deleteEmployeeToast(i);
+        this.getAllEmployees();
+      }
+      else {
+        this.errorString = "Error occured during deletion"
+      }
+    }, err => {
+      this.errorString = err;
+    });
+  }
+
   private filterEmployees(full_name: string): Employee[] {
     return this.employees.filter(employee => {
       return employee.full_name.toString().indexOf(full_name) > -1;
     });
+  }
+
+  private async deleteEmployeeToast(i: number) {
+    const toast = await this.toastController.create({
+      message: 'Employee: '+this.sortedEmployees[i].full_name+' deleted.',
+      duration: 2000
+    });
+    return toast.present();
   }
 
 }
