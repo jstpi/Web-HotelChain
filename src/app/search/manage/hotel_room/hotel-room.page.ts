@@ -26,6 +26,7 @@ export class HotelRoomPage implements OnInit {
   isRoomsMode: boolean;
   isRentedMode: boolean;
   isBookedMode: boolean;
+  flag: boolean;
   
   constructor(
     private authService: AuthService,
@@ -47,6 +48,7 @@ export class HotelRoomPage implements OnInit {
     this.isRoomsMode = true;
     this.isBookedMode = false;
     this.isRentedMode = false;
+    this.flag = true;
   }
 
   ngOnInit() {
@@ -66,6 +68,8 @@ export class HotelRoomPage implements OnInit {
         this.router.navigateByUrl("");
       }
       else {
+        this.getBookedRooms();
+        this.getRentedRooms();
         this.getAllRooms();
       }
     }
@@ -75,21 +79,35 @@ export class HotelRoomPage implements OnInit {
   }
 
   segmentChanged(event){
-    if (event.value == "rooms"){
-
-      this.getAllRooms();
+    if (this.flag){
+      this.flag = false;
     }
-    else if (event.value == "booked"){
-      this.getBookedRooms();
-    }
-    else if (event.value == "rented"){
-      this.getRentedRooms();
+    else {
+      if (event.detail.value == "rooms"){
+        this.isRoomsMode = true;
+        this.isRentedMode = false;
+        this.isBookedMode = false;
+        this.getAllRooms();
+      }
+      else if (event.detail.value == "booked"){
+        this.isRoomsMode = false;
+        this.isRentedMode = false;
+        this.isBookedMode = true;
+        this.getBookedRooms();
+      }
+      else if (event.detail.value == "rented"){
+        this.isRoomsMode = false;
+        this.isRentedMode = true;
+        this.isBookedMode = false;
+        this.getRentedRooms();
+      }
     }
   }
 
   private getAllRooms(){
     this.errorString = "";
     this.rooms = [];
+    this.sortedRooms = [];
     let hotelInfo={
       hotel_id: this.manageInfoService.hotel_id
     }
@@ -105,6 +123,13 @@ export class HotelRoomPage implements OnInit {
         rooms.forEach(room => {
           this.rooms.push(new Room(room.room_number, room.hotel_id, room.chain_name, room.price, room.capacity, room.view_type, room.is_extendable, [""], [""]));
         }); 
+        this.rentedRooms.forEach(rentedRoom => {
+          this.rooms.forEach(room => {
+            if (rentedRoom.number == room.number){
+              room.isBooked = true;
+            }
+          });
+        });
         this.sortedRooms  = Object.assign([], this.rooms);
       }
       else {
@@ -131,7 +156,11 @@ export class HotelRoomPage implements OnInit {
       console.log(rooms);
       if (rooms != null){
         rooms.forEach(room => {
-          this.bookedRooms.push(new Room(room.room_number, room.hotel_id, room.chain_name, room.price, room.capacity, room.view_type, room.is_extendable, [""], [""]));
+          let newRoom = new Room(room.room_number, room.hotel_id, room.chain_name, room.price, room.capacity, room.view_type, room.is_extendable, [""], [""]);
+          newRoom.check_in = room.check_in;
+          newRoom.check_out = room.check_out;
+          this.bookedRooms.push(newRoom);
+
         }); 
       }
       else {
@@ -158,7 +187,10 @@ export class HotelRoomPage implements OnInit {
       console.log(rooms);
       if (rooms != null){
         rooms.forEach(room => {
-          this.rentedRooms.push(new Room(room.room_number, room.hotel_id, room.chain_name, room.price, room.capacity, room.view_type, room.is_extendable, [""], [""]));
+          let newRoom = new Room(room.room_number, room.hotel_id, room.chain_name, room.price, room.capacity, room.view_type, room.is_extendable, [""], [""]);
+          newRoom.check_in = room.check_in;
+          newRoom.check_out = room.check_out;
+          this.rentedRooms.push(newRoom);
         }); 
       }
       else {

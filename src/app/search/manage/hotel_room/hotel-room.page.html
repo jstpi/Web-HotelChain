@@ -19,7 +19,7 @@
 </ion-segment>
 <ion-searchbar *ngIf="isRoomsMode" (ionChange)="onFilterRooms($event)" animated></ion-searchbar>
 <ion-content padding>
-    <ion-list *ngIf="errorString == '' && isRoomsMode">
+    <ion-list *ngIf="isRoomsMode">
         <ion-item *ngFor="let room of sortedRooms; let i = index">
             <ion-thumbnail class="hotelThumbnail" slot="start">
                 <div *ngIf="room.capacity == 1">
@@ -54,7 +54,7 @@
                                 <ion-button shape="round" clear item-right (click)="onEditRoom(i)"><ion-icon name="create"></ion-icon></ion-button>
                             </ion-col>
                             <ion-col>
-                                <ion-button color="warning" shape="round" clear item-right (click)="onEditRoom(i)"><ion-icon name="arrow-forward"></ion-icon>Rent</ion-button>
+                                <ion-button *ngIf="!room.isBooked" color="warning" shape="round" clear item-right (click)="onRentRoom(i)"><ion-icon name="arrow-forward"></ion-icon>Rent</ion-button>
                             </ion-col>
                         </ion-row>
                     </ion-grid>
@@ -62,7 +62,7 @@
             </ion-label>
         </ion-item>
     </ion-list>
-    <ion-list *ngIf="errorString == '' && isBookedMode">
+    <ion-list *ngIf="isBookedMode">
         <ion-item *ngFor="let room of bookedRooms; let i = index">
             <ion-thumbnail class="hotelThumbnail" slot="start">
                 <div *ngIf="room.capacity == 1">
@@ -83,19 +83,16 @@
             </ion-thumbnail>
             <ion-label>Room #{{room.number}}
                     <p>
-                        Price: {{room.price}} $ / night
+                        Check In: {{room.check_in}}
                     </p>
                     <p>
-                        Capacity: {{room.capacity}}
+                        Check Out: {{room.check_out}}
                     </p>
-                    <p>
-                        View Type: {{room.view_type}}
-                    </p>
-                    <ion-button shape="round" clear item-right (click)="onEditRoom(i)"><ion-icon name="create"></ion-icon></ion-button>
+                    <ion-button color="warning" shape="round" clear item-right (click)="onRentRoom(i)"><ion-icon name="arrow-forward"></ion-icon>Rent</ion-button>
             </ion-label>
         </ion-item>
     </ion-list>
-    <ion-list *ngIf="errorString == '' && isBookedMode">
+    <ion-list *ngIf="isRentedMode">
         <ion-item *ngFor="let room of rentedRooms; let i = index">
             <ion-thumbnail class="hotelThumbnail" slot="start">
                 <div *ngIf="room.capacity == 1">
@@ -116,15 +113,11 @@
             </ion-thumbnail>
             <ion-label>Room #{{room.number}}
                     <p>
-                        Price: {{room.price}} $ / night
+                        Check In: {{room.check_in}}
                     </p>
                     <p>
-                        Capacity: {{room.capacity}}
+                        Check Out: {{room.check_out}}
                     </p>
-                    <p>
-                        View Type: {{room.view_type}}
-                    </p>
-                    <ion-button shape="round" clear item-right (click)="onEditRoom(i)"><ion-icon name="create"></ion-icon></ion-button>
             </ion-label>
         </ion-item>
     </ion-list>
