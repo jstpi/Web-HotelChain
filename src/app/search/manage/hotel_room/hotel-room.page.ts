@@ -6,6 +6,8 @@ import { Room } from 'src/app/objects/room.vm';
 import { HotelRoomsService } from 'src/app/services/hotel-rooms.service';
 import { HotelBooksService } from 'src/app/services/hotel-books.service';
 import { HotelRentsService } from 'src/app/services/hotel-rents.service';
+import { ModalController } from '@ionic/angular';
+import { AddRoomModal } from 'src/app/components/add-room_modal/add-room.modal';
 
 @Component({
   selector: 'app-hotel-room',
@@ -15,6 +17,7 @@ import { HotelRentsService } from 'src/app/services/hotel-rents.service';
 export class HotelRoomPage implements OnInit {
   errorString: string;
   chain_name: string;
+  hotel_id: string;
   rooms: Room[];
   sortedRooms: Room[];
   bookedRooms: Room[];
@@ -30,9 +33,11 @@ export class HotelRoomPage implements OnInit {
     private router: Router,
     private hotelRoomsService: HotelRoomsService,
     private hotelBooksService: HotelBooksService,
-    private hotelRentsService: HotelRentsService
+    private hotelRentsService: HotelRentsService,
+    private modalCtrl: ModalController
   ) { 
     this.chain_name = "";
+    this.hotel_id = "";
     this.errorString = "";
     this.rooms = [];
     this.sortedRooms = [];
@@ -51,6 +56,10 @@ export class HotelRoomPage implements OnInit {
       this.chain_name = this.manageInfoService.chain_name;
       if (this.manageInfoService.chain_name == ""){
         this.chain_name = this.route.snapshot.params['chain_name'];
+      }
+      this.hotel_id = this.manageInfoService.hotel_id;
+      if (this.manageInfoService.hotel_id == ""){
+        this.hotel_id = this.route.snapshot.params['hotel_id'];
       }
       if (this.chain_name == null){
         this.router.navigateByUrl("");
@@ -161,6 +170,27 @@ export class HotelRoomPage implements OnInit {
 
   onFilterRooms(search){
     this.sortedRooms = this.filterRooms(search.detail.value);
+  }
+
+  async onAddRoom(){
+    let modal = await this.modalCtrl.create({
+      component: AddRoomModal,
+      componentProps: {
+        chain_name: this.chain_name,
+        hotel_id: this.hotel_id
+      }
+    });
+    return await modal.present();
+  }
+
+  async onEditRoom(i: number){
+    let modal = await this.modalCtrl.create({
+      component: AddRoomModal,
+      componentProps: {
+        room_number: this.sortedRooms[i].number
+      }
+    });
+    return await modal.present();
   }
 
   private filterRooms(room_number: string): Room[] {

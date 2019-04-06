@@ -1,0 +1,47 @@
+
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="back()"><ion-icon name="arrow-back"></ion-icon></ion-button>
+      </ion-buttons>
+      <ion-title>Add Room</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content padding>
+    <form [formGroup]="roomForm" (ngSubmit)="submit()">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Room Property</ion-label>
+        </ion-list-header>
+        <ion-item>
+          <ion-label class="inputLabel">Price</ion-label>
+          <ion-input type="number" formControlName="price"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label class="inputLabel">Capacity</ion-label>
+          <ion-input type="number" formControlName="capacity"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label class="inputLabel">View Type</ion-label>
+          <ion-input formControlName="view_type"></ion-input>
+        </ion-item>
+        <ion-list>
+          <div formArrayName="amenities" *ngFor="let amenity of roomForm.get('amenities').controls; let i = index;">
+            <ion-item [formGroupName]="i">
+              <ion-label class="inputLabel">Amenity #{{i+1}}</ion-label>
+              <ion-input formControlName="amenity"></ion-input>
+              <ion-button *ngIf="i != 0" color="danger" shape="round" clear item-right (click)="removeAmenity(i)"><ion-icon name="remove"></ion-icon></ion-button>
+            </ion-item>
+          </div>
+          <ion-button shape="round" clear item-right (click)="addAmenity()"><ion-icon name="add"></ion-icon></ion-button>
+        </ion-list>
+        <ion-item>
+          <ion-label>Is Extendable</ion-label>
+          <ion-toggle formControlName="is_extendable"></ion-toggle>
+        </ion-item>
+      </ion-list>
+      <div id="submit_div">
+        <ion-button id="submit_button" expand="full" shape="round" type="submit" [disabled]="!roomForm.valid">Submit</ion-button>
+      </div>
+    </form>
+  </ion-content>

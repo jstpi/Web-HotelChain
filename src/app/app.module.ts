@@ -32,10 +32,12 @@ import { EditHotelService } from './services/edit-hotel.service';
 import { HotelRoomsService } from './services/hotel-rooms.service';
 import { HotelBooksService } from './services/hotel-books.service';
 import { HotelRentsService } from './services/hotel-rents.service';
+import { AddRoomService } from './services/add-room.service';
+import { AddRoomModal } from './components/add-room_modal/add-room.modal';
 
 @NgModule({
-  declarations: [AppComponent, LoginModal, SigninModal, MainPopover, AddHotelModal],
-  entryComponents: [LoginModal, SigninModal, MainPopover, AddHotelModal],
+  declarations: [AppComponent, LoginModal, SigninModal, MainPopover, AddHotelModal, AddRoomModal],
+  entryComponents: [LoginModal, SigninModal, MainPopover, AddHotelModal, AddRoomModal],
   imports: [
     BrowserModule, 
     IonicModule.forRoot(), 
@@ -62,7 +64,8 @@ import { HotelRentsService } from './services/hotel-rents.service';
     EditHotelService,
     HotelRoomsService,
     HotelBooksService,
-    HotelRentsService
+    HotelRentsService,
+    AddRoomService
   ],
   bootstrap: [AppComponent]
 })
