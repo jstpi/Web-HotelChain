@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, AbstractControl, FormControl } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
 import { Address } from 'src/app/objects/address.vm';
 import { Hotel } from 'src/app/objects/hotel.vm';
@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HotelInfoService } from 'src/app/services/hotel-info.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ManageInfoService } from 'src/app/services/manage-info.service';
+import { EditHotelService } from 'src/app/services/edit-hotel.service';
+import { Address2 } from 'src/app/objects/address2.vm';
 
 @Component({
   selector: 'app-hotel-info',
@@ -27,6 +29,9 @@ export class HotelInfoPage implements OnInit {
   phone_numbers: FormArray;
   errorString: string;
   chain_name: string;
+  typeControl: AbstractControl;
+  stateProvControl: AbstractControl;
+
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -35,7 +40,8 @@ export class HotelInfoPage implements OnInit {
     private hotelInfoService: HotelInfoService,
     private authService: AuthService,
     private router: Router,
-    private manageInfoService: ManageInfoService) {
+    private manageInfoService: ManageInfoService,
+    private editHotelService: EditHotelService) {
       this.errorString = "";
     this.isEditMode = false;
 
@@ -49,12 +55,12 @@ export class HotelInfoPage implements OnInit {
       number_of_rooms: [this.hotel.number_of_rooms, Validators.required],
       rating: [this.hotel.rating, Validators.required],
       contact_email_address: [this.hotel.contact_email_address, Validators.required],
-      phone_numbers: this.formBuilder.array([]),
       country: [""],
       state_province: [""],
       city: [""],
       street: [""],
       postalCode: [""],
+      phone_numbers: this.formBuilder.array([]),
     });
     this.hotel.contact_phone_numbers.forEach(phoneNum => {
       this.addPhoneNumber(phoneNum);
@@ -148,44 +154,50 @@ export class HotelInfoPage implements OnInit {
   createPhoneNumber(phoneNum?): FormGroup{
     if (phoneNum != null){
       return this.formBuilder.group({
-        phone_number: [phoneNum, Validators.required],
+        phone_number: [phoneNum],
       });
     }
     else {
       return this.formBuilder.group({
-        phone_number: ['', Validators.required],
+        phone_number: [''],
       });
     }
   }
 
   ngOnInit() {
+    this.isEditMode = false;
     this.errorString = "";
-    this.addressInputControl();
-    if (this.authService.isLoggedIn() && this.authService.getTokenRole() == "Admin" || this.authService.getTokenRole() == "Employee"){
+    if (this.authService.isLoggedIn() && (this.authService.getTokenRole() == "Admin" || this.authService.getTokenRole() == "Employee")){
+
       this.chain_name = this.manageInfoService.chain_name;
-      if (this.manageInfoService.chain_name == null){
+      if (this.manageInfoService.chain_name == ""){
         this.chain_name = this.route.snapshot.params['chain_name'];
       }
       let hotelInfo={
         hotel_id: this.manageInfoService.hotel_id
       }
-      if (this.manageInfoService.hotel_id == null){
-        let hotelInfo={
+      if (this.manageInfoService.hotel_id == ""){
+        hotelInfo={
           hotel_id: this.route.snapshot.params['hotel_id']
         }
       }
-      
-      this.hotelInfoService.getHotel(JSON.stringify(hotelInfo)).subscribe(hotel => {
-        console.log(hotel);
-        if (hotel != null){
-          this.hotel = new Hotel(hotel.chain_name, hotel.hotel_id, hotel.rating, hotel.number_of_rooms, new Address(hotel.hotel_address), hotel.contact_email_address, [""], hotel.minPrice, [0]);
-        }
-        else {
-          this.errorString = "No hotel was founded";
-        }
-      }, err => {
-        this.errorString = err;
-      });
+
+      if (this.chain_name == null){
+        this.router.navigateByUrl("");
+      }
+      else {
+        this.hotelInfoService.getHotel(JSON.stringify(hotelInfo)).subscribe(hotel => {
+          console.log(hotel);
+          if (hotel != null){
+            this.hotel = new Hotel(hotel.chain_name, hotel.hotel_id, hotel.rating, hotel.number_of_rooms, new Address(hotel.hotel_address), hotel.contact_email_address, [""], hotel.minPrice, [0]);
+          }
+          else {
+            this.errorString = "No hotel was founded";
+          }
+        }, err => {
+          this.errorString = err;
+        });
+      }
     }
     else {
       this.router.navigateByUrl("");
@@ -203,25 +215,46 @@ export class HotelInfoPage implements OnInit {
         number_of_rooms: [this.hotel.number_of_rooms, Validators.required],
         rating: [this.hotel.rating, Validators.required],
         contact_email_address: [this.hotel.contact_email_address, Validators.required],
-        phone_numbers: this.formBuilder.array([]),
         country: [""],
         state_province: [""],
         city: [""],
         street: [""],
         postalCode: [""],
+        phone_numbers: this.formBuilder.array([]),
       });
       this.hotel.contact_phone_numbers.forEach(phoneNum => {
         this.addPhoneNumber(phoneNum);
       });
+      this.addressInputControl();
     }
   }
 
   submit(){
     console.log(this.editHotelForm.value);
-    this.editUserToast();
+    let address = new Address2(this.editHotelForm.value.country, this.editHotelForm.value.state_province, this.editHotelForm.value.city, this.editHotelForm.value.street, this.editHotelForm.value.postalCode);
+    let updateObj = {
+      hotel_id: this.editHotelForm.value.hotel_id,
+      number_of_rooms: this.editHotelForm.value.number_of_rooms,
+      rating: this.editHotelForm.value.rating,
+      contact_email_address: this.editHotelForm.value.contact_email_address,
+      phone_numbers: this.editHotelForm.value.phone_numbers,
+      hotel_address: address.format()
+    }
+    this.editHotelService.editHotelInfo(JSON.stringify(updateObj)).subscribe(hotel => {
+      console.log(hotel);
+      if (hotel != null){
+        this.editHotelToast();
+        this.ngOnInit();
+      }
+      else {
+        this.errorString = "Hotel was not founded";
+      }
+    }, err => {
+      this.errorString = err;
+    });
   }
 
-  private async editUserToast() {
+  private async editHotelToast() {
     const toast = await this.toastController.create({
       message: 'Your hotel data has been modified.',
       duration: 2000
@@ -229,9 +262,9 @@ export class HotelInfoPage implements OnInit {
     return toast.present();
   }
 
-  private addressInputControl(){
-    let typeControl = this.editHotelForm.get('country');
-    typeControl.valueChanges.forEach(
+  addressInputControl(){
+    this.typeControl = this.editHotelForm.get('country');
+    this.typeControl.valueChanges.forEach(
       (value: string) => {
         this.editHotelForm.get('state_province').setValue("");
         this.editHotelForm.get('city').setValue("");
@@ -250,8 +283,8 @@ export class HotelInfoPage implements OnInit {
         }
       }
     );
-    let stateProvControl = this.editHotelForm.get('state_province');
-    stateProvControl.valueChanges.forEach(
+    this.stateProvControl = this.editHotelForm.get('state_province');
+    this.stateProvControl.valueChanges.forEach(
       (value: string) => {
         this.editHotelForm.get('city').setValue("");
         this.editHotelForm.get('street').setValue("");

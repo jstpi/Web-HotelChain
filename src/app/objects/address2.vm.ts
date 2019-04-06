@@ -13,6 +13,11 @@ export class Address2 {
     }
 
     public format(): string{
-        return this.street+", "+this.city+", "+this.state_province+", "+this.country+", "+this.postalCode
+        if (this.country == "" && this.state_province == "" && this.city == "" && this.street == "" && this.postalCode == ""){
+            return "";
+        }
+        else{
+            return this.street+", "+this.city+", "+this.state_province+", "+this.country+", "+this.postalCode;
+        }
     }
 }

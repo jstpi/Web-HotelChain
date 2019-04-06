@@ -66,7 +66,7 @@
                     {{hotel.hotel_id}} ({{hotel.hotel_address.address}})
                   </ion-label>
                   <ion-button id="manage_button" shape="round" clear item-right (click)="onManage(i)">Manage</ion-button>
-                  <ion-button color="danger" shape="round" clear item-right (click)="onRemoveHotelConfirm()"><ion-icon name="remove"></ion-icon></ion-button>
+                  <ion-button color="danger" shape="round" clear item-right (click)="onRemoveHotelConfirm(i)"><ion-icon name="remove"></ion-icon></ion-button>
                 </ion-item>
               </ion-list>
               <ion-button *ngIf="userType == 'Admin'" shape="round" clear item-right (click)="onAddHotel()"><ion-icon name="add"></ion-icon></ion-button>

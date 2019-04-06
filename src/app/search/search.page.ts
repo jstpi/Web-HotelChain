@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, PopoverController, AlertController } from '@ionic/angular';
+import { ModalController, PopoverController, AlertController, ToastController } from '@ionic/angular';
 import { LoginModal } from '../components/login_modal/login.modal';
 import { SigninModal } from '../components/signin_modal/signin.modal';
 import { MainPopover } from '../components/main_popover/main.popover';
@@ -15,6 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AddHotelModal } from '../components/add-hotel_modal/add-hotel.modal';
 import { AdminHotelsService } from '../services/admin-hotels.service';
 import { ManageInfoService } from '../services/manage-info.service';
+import { DeleteHotelService } from '../services/delete-hotel.service';
 
 @Component({
   selector: 'app-search',
@@ -41,7 +42,9 @@ export class SearchPage implements OnInit {
     private alertController: AlertController,
     private adminHotelsService: AdminHotelsService,
     private router: Router,
-    private manageInfoService: ManageInfoService) {
+    private manageInfoService: ManageInfoService,
+    private deleteHotelService: DeleteHotelService,
+    private toastController: ToastController) {
       this.searchForm = this.formBuilder.group({
         address: ['', Validators.required]
       });
@@ -126,9 +129,27 @@ export class SearchPage implements OnInit {
     });
   }
 
-  async onRemoveHotelConfirm() {
+  onDeleteHotel(i: number){
+    let hotelObj = {
+      hotel_id: this.hotels[i].hotel_id
+    }
+    this.deleteHotelService.deleteHotel(JSON.stringify(hotelObj)).subscribe(deleteResponse => {
+      console.log(deleteResponse);
+      if (deleteResponse != null){
+        this.deleteHotelToast(i);
+        this.getUser();
+      }
+      else {
+        this.errorString = "Error occured during deletion"
+      }
+    }, err => {
+      this.errorString = err;
+    });
+  }
+
+  async onRemoveHotelConfirm(i: number) {
     const alert = await this.alertController.create({
-      header: 'Delete: (hotel ID)',
+      header: 'Delete: '+this.hotels[i].hotel_id,
       message: 'The deletion of this hotel will remove all rooms associated',
       buttons: [
         {
@@ -141,7 +162,7 @@ export class SearchPage implements OnInit {
         }, {
           text: 'Delete',
           handler: () => {
-            console.log('DELETE (hotel Id)');
+            this.onDeleteHotel(i);
           }
         }
       ]
@@ -207,6 +228,14 @@ export class SearchPage implements OnInit {
       this.errorString = err;
       this.isLogedIn = false;
     });
+  }
+
+  private async deleteHotelToast(i: number) {
+    const toast = await this.toastController.create({
+      message: 'Hotel: '+this.hotels[i].hotel_id+' deleted.',
+      duration: 2000
+    });
+    return toast.present();
   }
 
 }

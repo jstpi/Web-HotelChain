@@ -9,6 +9,7 @@ import { UserInfoService } from 'src/app/services/user-info.service';
 import { Employee } from 'src/app/objects/employee.vm';
 import { Admin } from 'src/app/objects/admin.vm';
 import { EditUserService } from 'src/app/services/edit-user.service';
+import { Address2 } from 'src/app/objects/address2.vm';
 
 @Component({
   selector: 'app-info',
@@ -140,7 +141,6 @@ export class UserInfoPage implements OnInit {
 
   ngOnInit() {
     this.errorString = "";
-    this.addressInputControl();
 
     this.isUser = this.authService.getTokenRole() == "Customer";
     this.isEmployee = this.authService.getTokenRole() == "Employee";
@@ -214,12 +214,20 @@ export class UserInfoPage implements OnInit {
           postalCode: [""],
         });
       }
+      this.addressInputControl();
     }
   }
 
   submit(){
+    let address = new Address2(this.editUserForm.value.country, this.editUserForm.value.state_province, this.editUserForm.value.city, this.editUserForm.value.street, this.editUserForm.value.postalCode);
+    let updateObj = {
+      email: this.editUserForm.value.user,
+      sin: this.editUserForm.value.pass,
+      full_name: this.editUserForm.value.fullName,
+      address: address.format()
+    }
     if (this.isUser){
-      this.editUserService.editUserInfo(JSON.stringify(this.editUserForm.value)).subscribe(user => {
+      this.editUserService.editUserInfo(JSON.stringify(updateObj)).subscribe(user => {
         console.log(user);
         if (user != null){
           this.editUserToast();
@@ -232,7 +240,7 @@ export class UserInfoPage implements OnInit {
       });
     }
     else if (this.isEmployee){
-      this.editUserService.editEmployeeInfo(JSON.stringify(this.editUserForm.value)).subscribe(user => {
+      this.editUserService.editEmployeeInfo(JSON.stringify(updateObj)).subscribe(user => {
         console.log(user);
         if (user != null){
           this.editUserToast();
@@ -245,7 +253,7 @@ export class UserInfoPage implements OnInit {
       });
     }
     else {
-      this.editUserService.editAdminInfo(JSON.stringify(this.editUserForm.value)).subscribe(user => {
+      this.editUserService.editAdminInfo(JSON.stringify(updateObj)).subscribe(user => {
         console.log(user);
         if (user != null){
           this.editUserToast();

@@ -7,7 +7,7 @@
       <ion-router-outlet name="info"></ion-router-outlet>
     </ion-tab-button>
 
-    <ion-tab-button tab="room" href="/tabs/(room:room)">
+    <ion-tab-button *ngIf="!isAdmin" tab="room" href="/tabs/(room:room)">
       <ion-icon name="bookmarks"></ion-icon>
       <ion-label>Room</ion-label>
       <ion-router-outlet name="room"></ion-router-outlet>
