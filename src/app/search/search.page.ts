@@ -119,6 +119,9 @@ export class SearchPage implements OnInit {
   async onAddHotel(){
     let modal = await this.modalCtrl.create({
       component: AddHotelModal,
+      componentProps: {
+        chain_name: this.chain_name
+      }
     });
     await modal.present();
     return await modal.onWillDismiss().then((data?)=>{

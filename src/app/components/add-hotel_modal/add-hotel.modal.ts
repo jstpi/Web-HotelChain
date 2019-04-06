@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, ToastController } from '@ionic/angular';
+import { ModalController, ToastController, NavParams } from '@ionic/angular';
 import { Validators, FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { Address2 } from 'src/app/objects/address2.vm';
@@ -24,7 +24,7 @@ export class AddHotelModal implements OnInit {
   //log in feedback
   errorString: String;
 
-  constructor(modalCtrl: ModalController, private formBuilder: FormBuilder, private addHotelService: AddHotelService, private toastController: ToastController) {
+  constructor(modalCtrl: ModalController, private formBuilder: FormBuilder, private addHotelService: AddHotelService, private toastController: ToastController, private navParam: NavParams) {
     this.isCountryChosen = false;
     this.isStateProvChosen = false;
     this.isCAN = false;
@@ -173,10 +173,11 @@ export class AddHotelModal implements OnInit {
     this.errorString = "";
     let address = new Address2(this.hotelForm.value.country, this.hotelForm.value.state_province, this.hotelForm.value.city, this.hotelForm.value.street, this.hotelForm.value.postalCode);
     let hotelObj = {
+      chain_name: this.navParam.get("chain_name"),
       contact_email_address: this.hotelForm.value.contact_email_address,
       rating: this.hotelForm.value.rating,
       phone_numbers: this.hotelForm.value.phone_numbers,
-      address: address.format()
+      hotel_address: address.format()
     }
     this.addHotelService.addHotel(JSON.stringify(hotelObj)).subscribe(addHotelResponse => {
       console.log(addHotelResponse);

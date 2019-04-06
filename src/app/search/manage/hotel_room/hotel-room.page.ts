@@ -8,6 +8,7 @@ import { HotelBooksService } from 'src/app/services/hotel-books.service';
 import { HotelRentsService } from 'src/app/services/hotel-rents.service';
 import { ModalController } from '@ionic/angular';
 import { AddRoomModal } from 'src/app/components/add-room_modal/add-room.modal';
+import { EditRoomModal } from 'src/app/components/edit-room_modal/edit-room.modal';
 
 @Component({
   selector: 'app-hotel-room',
@@ -180,17 +181,38 @@ export class HotelRoomPage implements OnInit {
         hotel_id: this.hotel_id
       }
     });
-    return await modal.present();
+    await modal.present();
+    return await modal.onWillDismiss().then((data?)=>{
+      if (data.data !== undefined){
+        if (data.data.closeEvent == "addRoom"){
+          this.getAllRooms();
+        }
+      }
+    });
   }
 
   async onEditRoom(i: number){
     let modal = await this.modalCtrl.create({
-      component: AddRoomModal,
+      component: EditRoomModal,
       componentProps: {
-        room_number: this.sortedRooms[i].number
+        chain_name: this.chain_name,
+        hotel_id: this.hotel_id,
+        room_number: this.sortedRooms[i].number,
+        price: this.sortedRooms[i].price,
+        capacity: this.sortedRooms[i].capacity,
+        view_type: this.sortedRooms[i].view_type,
+        is_extendable: this.sortedRooms[i].is_extendable,
+        amenities: this.sortedRooms[i].amenities
       }
     });
-    return await modal.present();
+    await modal.present();
+    return await modal.onWillDismiss().then((data?)=>{
+      if (data.data !== undefined){
+        if (data.data.closeEvent == "editRoom"){
+          this.getAllRooms();
+        }
+      }
+    });
   }
 
   private filterRooms(room_number: string): Room[] {
