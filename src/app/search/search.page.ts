@@ -59,6 +59,9 @@ export class SearchPage implements OnInit {
     if (this.authService.isLoggedIn()){
       this.getUser();
     }
+    else {
+      this.isLogedIn = false;
+    }
   }
 
   async presentPopover(ev: any) {

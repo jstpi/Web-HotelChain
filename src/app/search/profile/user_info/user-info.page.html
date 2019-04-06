@@ -17,7 +17,9 @@
                 <p>User</p>
             </ion-col>
             <ion-col>
-                <p *ngIf="!isEditMode">{{user.email}}</p>
+                <p *ngIf="!isEditMode && isUser">{{user.email}}</p>
+                <p *ngIf="!isEditMode && isEmployee">{{employee.email}}</p>
+                <p *ngIf="!isEditMode && isAdmin">{{admin.email}}</p>
                 <ion-item *ngIf="isEditMode">
                     <ion-input formControlName="email"></ion-input>
                 </ion-item>
@@ -28,7 +30,9 @@
                 <p>Full Name</p>
             </ion-col>
             <ion-col>
-                <p *ngIf="!isEditMode">{{user.full_name}}</p>
+                <p *ngIf="!isEditMode && isUser">{{user.full_name}}</p>
+                <p *ngIf="!isEditMode && isEmployee">{{employee.full_name}}</p>
+                <p *ngIf="!isEditMode && isAdmin">{{admin.full_name}}</p>
                 <ion-item *ngIf="isEditMode">
                     <ion-input formControlName="fullName"></ion-input>
                 </ion-item>
@@ -39,16 +43,18 @@
                 <p>SIN / SSN</p>
             </ion-col>
             <ion-col>
-                <p *ngIf="!isEditMode">{{user.sin}}</p>
+                <p *ngIf="!isEditMode && isUser">{{user.sin}}</p>
+                <p *ngIf="!isEditMode && isEmployee">{{employee.sin}}</p>
+                <p *ngIf="!isEditMode && isAdmin">{{admin.sin}}</p>
                 <ion-item *ngIf="isEditMode">
                     <ion-input *ngIf="isEditMode" formControlName="sin"></ion-input>
                 </ion-item>
             </ion-col>
         </ion-row>
-        <ion-row class="rowHeader">
+        <ion-row *ngIf="isUser || isEmployee" class="rowHeader">
             <p>Address</p>
         </ion-row>
-        <ion-row>
+        <ion-row *ngIf="isUser || isEmployee">
             <ion-col *ngIf="!isEditMode" class="colHeader" size="3">
             
             </ion-col>

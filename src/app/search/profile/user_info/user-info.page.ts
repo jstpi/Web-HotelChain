@@ -3,6 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
 import { Customer } from 'src/app/objects/customer.vm';
 import { Address } from 'src/app/objects/address.vm';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
+import { UserInfoService } from 'src/app/services/user-info.service';
+import { Employee } from 'src/app/objects/employee.vm';
+import { Admin } from 'src/app/objects/admin.vm';
+import { EditUserService } from 'src/app/services/edit-user.service';
 
 @Component({
   selector: 'app-info',
@@ -11,6 +17,12 @@ import { Address } from 'src/app/objects/address.vm';
 })
 export class UserInfoPage implements OnInit {
   user: Customer;
+  employee: Employee;
+  admin: Admin;
+
+  isUser: boolean;
+  isEmployee: boolean;
+  isAdmin: boolean;
 
   isEditMode: boolean;
 
@@ -20,17 +32,28 @@ export class UserInfoPage implements OnInit {
   isCAN: Boolean;
   provinces: Array<String>;
   states: Array<String>;
+  errorString: string;
 
   constructor(
     private formBuilder: FormBuilder, 
-    public toastController: ToastController) {
+    public toastController: ToastController,
+    private authService: AuthService,
+    private router: Router,
+    private userInfoService: UserInfoService,
+    private editUserService: EditUserService) {
     this.isEditMode = false;
+    this.errorString = "";
 
     // TODO: change to a subscription
 
     let today = new Date();
-    let address = new Address("Test address");
-    this.user = new Customer("jstpi047", "23434654", "Jérémie St-Pierre", address, today.toISOString());
+    let address = new Address("");
+    this.user = new Customer("", "", "", address, today.toISOString());
+    this.employee = new Employee("", "", "", address);
+    this.admin = new Admin("", "", "");
+    this.isUser = true;
+    this.isEmployee = false;
+    this.isAdmin = false;
 
     this.isCountryChosen = false;
     this.isStateProvChosen = false;
@@ -116,7 +139,37 @@ export class UserInfoPage implements OnInit {
   }
 
   ngOnInit() {
+    this.errorString = "";
     this.addressInputControl();
+
+    this.isUser = this.authService.getTokenRole() == "Customer";
+    this.isEmployee = this.authService.getTokenRole() == "Employee";
+    this.isAdmin = this.authService.getTokenRole() == "Admin";
+
+    if (this.authService.isLoggedIn()){  
+      this.userInfoService.getUserInfo(JSON.stringify("")).subscribe(user => {
+        console.log(user);
+        if (user != null){
+          if (this.authService.getTokenRole() == "Customer"){
+            this.user = new Customer(user.email, user.sin, user.full_name, new Address(user.address), user.date_registration);
+          }
+          else if (this.authService.getTokenRole() == "Employee"){
+            this.employee = new Employee(user.sin, user.email, user.full_name, new Address(user.address));
+          }
+          else {
+            this.admin = new Admin(user.sin, user.full_name, user.email);
+          }
+        }
+        else {
+          this.errorString = "User was not founded";
+        }
+      }, err => {
+        this.errorString = err;
+      });
+    }
+    else {
+      this.router.navigateByUrl("");
+    }
   }
 
   editMode(){
@@ -125,22 +178,85 @@ export class UserInfoPage implements OnInit {
     }
     else {
       this.isEditMode = true;
-      this.editUserForm = this.formBuilder.group({
-        email: [this.user.email, Validators.required],
-        fullName: [this.user.full_name, Validators.required],
-        sin: [this.user.sin, Validators.required],
-        country: [""],
-        state_province: [""],
-        city: [""],
-        street: [""],
-        postalCode: [""],
-      });
+      if (this.isUser){
+        this.editUserForm = this.formBuilder.group({
+          email: [this.user.email, Validators.required],
+          fullName: [this.user.full_name, Validators.required],
+          sin: [this.user.sin, Validators.required],
+          country: [""],
+          state_province: [""],
+          city: [""],
+          street: [""],
+          postalCode: [""],
+        });
+      }
+      else if (this.isEmployee){
+        this.editUserForm = this.formBuilder.group({
+          email: [this.employee.email, Validators.required],
+          fullName: [this.employee.full_name, Validators.required],
+          sin: [this.employee.sin, Validators.required],
+          country: [""],
+          state_province: [""],
+          city: [""],
+          street: [""],
+          postalCode: [""],
+        });
+      }
+      else {
+        this.editUserForm = this.formBuilder.group({
+          email: [this.admin.email, Validators.required],
+          fullName: [this.admin.full_name, Validators.required],
+          sin: [this.admin.sin, Validators.required],
+          country: [""],
+          state_province: [""],
+          city: [""],
+          street: [""],
+          postalCode: [""],
+        });
+      }
     }
   }
 
   submit(){
-    console.log(this.editUserForm.value);
-    this.editUserToast();
+    if (this.isUser){
+      this.editUserService.editUserInfo(JSON.stringify(this.editUserForm.value)).subscribe(user => {
+        console.log(user);
+        if (user != null){
+          this.editUserToast();
+        }
+        else {
+          this.errorString = "User was not founded";
+        }
+      }, err => {
+        this.errorString = err;
+      });
+    }
+    else if (this.isEmployee){
+      this.editUserService.editEmployeeInfo(JSON.stringify(this.editUserForm.value)).subscribe(user => {
+        console.log(user);
+        if (user != null){
+          this.editUserToast();
+        }
+        else {
+          this.errorString = "User was not founded";
+        }
+      }, err => {
+        this.errorString = err;
+      });
+    }
+    else {
+      this.editUserService.editAdminInfo(JSON.stringify(this.editUserForm.value)).subscribe(user => {
+        console.log(user);
+        if (user != null){
+          this.editUserToast();
+        }
+        else {
+          this.errorString = "User was not founded";
+        }
+      }, err => {
+        this.errorString = err;
+      });
+    }
   }
 
   private async editUserToast() {
