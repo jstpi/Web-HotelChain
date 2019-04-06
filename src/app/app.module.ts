@@ -37,10 +37,12 @@ import { AddRoomModal } from './components/add-room_modal/add-room.modal';
 import { EditRoomModal } from './components/edit-room_modal/edit-room.modal';
 import { EditRoomService } from './services/edit-room.service';
 import { HotelEmployeeService } from './services/hotel-employees.service';
+import { AddEmployeeService } from './services/add-employee.service';
+import { AddEmployeeModal } from './components/add-employee_modal/add-employee.modal';
 
 @NgModule({
-  declarations: [AppComponent, LoginModal, SigninModal, MainPopover, AddHotelModal, AddRoomModal, EditRoomModal],
-  entryComponents: [LoginModal, SigninModal, MainPopover, AddHotelModal, AddRoomModal, EditRoomModal],
+  declarations: [AppComponent, LoginModal, SigninModal, MainPopover, AddHotelModal, AddRoomModal, EditRoomModal, AddEmployeeModal],
+  entryComponents: [LoginModal, SigninModal, MainPopover, AddHotelModal, AddRoomModal, EditRoomModal, AddEmployeeModal],
   imports: [
     BrowserModule, 
     IonicModule.forRoot(), 
@@ -70,7 +72,8 @@ import { HotelEmployeeService } from './services/hotel-employees.service';
     HotelRentsService,
     AddRoomService,
     EditRoomService,
-    HotelEmployeeService
+    HotelEmployeeService,
+    AddEmployeeService
   ],
   bootstrap: [AppComponent]
 })

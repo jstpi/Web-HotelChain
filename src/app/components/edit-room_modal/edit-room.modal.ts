@@ -140,6 +140,7 @@ export class EditRoomModal implements OnInit {
   }
 
   async onRemoveRoomConfirm() {
+    console.log("TEST");
     const alert = await this.alertController.create({
       header: 'Delete: Room #'+this.room_number,
       message: 'Are you sure you want to delete this room?',
@@ -159,6 +160,8 @@ export class EditRoomModal implements OnInit {
         }
       ]
     });
+
+    await alert.present();
   }
 
   private async editRoomToast() {
