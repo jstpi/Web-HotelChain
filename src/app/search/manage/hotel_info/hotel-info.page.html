@@ -3,7 +3,7 @@
         <ion-buttons slot="start">
             <ion-back-button defaultHref=""></ion-back-button>
         </ion-buttons>
-        <ion-title>(# Chain name)</ion-title>
+        <ion-title>{{chain_name}}</ion-title>
     </ion-toolbar>
 </ion-header>
 <ion-content padding>
@@ -67,7 +67,6 @@
                 <div *ngIf="isEditMode">
                     <div formArrayName="phone_numbers" *ngFor="let phone_number of editHotelForm.get('phone_numbers').controls; let i = index;">
                         <ion-item [formGroupName]="i">
-                            <ion-label class="inputLabel">phone number #{{i+1}}</ion-label>
                             <ion-input formControlName="phone_number"></ion-input>
                             <ion-button *ngIf="i != 0" color="danger" shape="round" clear item-right (click)="removePhoneNumber(i)"><ion-icon name="remove"></ion-icon></ion-button>
                         </ion-item>

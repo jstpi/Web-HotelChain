@@ -24,6 +24,8 @@ import { AddHotelModal } from './components/add-hotel_modal/add-hotel.modal';
 import { BookRoomService } from './services/book-room.service';
 import { AdminHotelsService } from './services/admin-hotels.service';
 import { AddHotelService } from './services/add-hotel.service';
+import { HotelInfoService } from './services/hotel-info.service';
+import { ManageInfoService } from './services/manage-info.service';
 
 @NgModule({
   declarations: [AppComponent, LoginModal, SigninModal, MainPopover, AddHotelModal],
@@ -46,7 +48,9 @@ import { AddHotelService } from './services/add-hotel.service';
     SearchRoomsService,
     BookRoomService,
     AdminHotelsService,
-    AddHotelService
+    AddHotelService,
+    HotelInfoService,
+    ManageInfoService
   ],
   bootstrap: [AppComponent]
 })

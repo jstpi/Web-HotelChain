@@ -61,11 +61,11 @@
           <ion-row justify-content-center>
             <ion-col align-self-center>
               <ion-list id="main_list">
-                <ion-item *ngFor="let hotel of hotels">
+                <ion-item *ngFor="let hotel of hotels; let i = index">
                   <ion-label>
-                    {{hotel.hotel_id}}
+                    {{hotel.hotel_id}} ({{hotel.hotel_address.address}})
                   </ion-label>
-                  <ion-button id="manage_button" shape="round" clear item-right href="/manage/tabs/info">Manage</ion-button>
+                  <ion-button id="manage_button" shape="round" clear item-right (click)="onManage(i)">Manage</ion-button>
                   <ion-button color="danger" shape="round" clear item-right (click)="onRemoveHotelConfirm()"><ion-icon name="remove"></ion-icon></ion-button>
                 </ion-item>
               </ion-list>

@@ -10,12 +10,11 @@ import { Address } from '../objects/address.vm';
 import { Employee } from '../objects/employee.vm';
 import { Admin } from '../objects/admin.vm';
 import { Hotel } from '../objects/hotel.vm';
-import { Chain } from '../objects/chain.vm';
-import { SearchHotelService } from '../services/search-hotel.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AddHotelModal } from '../components/add-hotel_modal/add-hotel.modal';
 import { AdminHotelsService } from '../services/admin-hotels.service';
+import { ManageInfoService } from '../services/manage-info.service';
 
 @Component({
   selector: 'app-search',
@@ -41,7 +40,8 @@ export class SearchPage implements OnInit {
     private userInfoService: UserInfoService,
     private alertController: AlertController,
     private adminHotelsService: AdminHotelsService,
-    private router: Router) {
+    private router: Router,
+    private manageInfoService: ManageInfoService) {
       this.searchForm = this.formBuilder.group({
         address: ['', Validators.required]
       });
@@ -149,6 +149,15 @@ export class SearchPage implements OnInit {
 
   onSearch(){
     this.router.navigate(['search', {city: this.searchForm.value.address}]);
+  }
+
+  onManage(i: number){
+    this.router.navigate(['manage/tabs/info', {
+      chain_name: this.chain_name,
+      hotel_id: this.hotels[i].hotel_id
+    }]);
+    this.manageInfoService.chain_name = this.chain_name;
+    this.manageInfoService.hotel_id = this.hotels[i].hotel_id;
   }
 
   // get the customer, employee or admin
