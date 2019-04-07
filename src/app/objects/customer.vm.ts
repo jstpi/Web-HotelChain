@@ -1,5 +1,3 @@
-import { Rent } from './rent.vm';
-import { Book } from './book.vm';
 import { Address } from './address.vm';
 
 export class Customer {
