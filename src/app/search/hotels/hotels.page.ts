@@ -43,7 +43,7 @@ export class HotelsPage implements OnInit {
       console.log(hotels);
       if (hotels != null){
         hotels.forEach(hotel => {
-          this.hotels.push(new Hotel(hotel.chain_name, hotel.hotel_id, hotel.rating, hotel.number_of_rooms, new Address(hotel.hotel_address), hotel.contact_email_address, [""], hotel.minPrice, [0]));
+          this.hotels.push(new Hotel(hotel.chain_name, hotel.hotel_id, hotel.rating, hotel.number_of_rooms, new Address(hotel.hotel_address), hotel.contact_email_address, [""], hotel.minPrice, hotel.capacities));
         }); 
         this.sortedHotels  = Object.assign([], this.hotels);
       }
