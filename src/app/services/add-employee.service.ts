@@ -9,7 +9,7 @@ export const TOKEN_NAME: string = 'jwt_token';
 @Injectable()
 export class AddEmployeeService {
 
-  private url: string = 'http://localhost:8080/SampleWebApp/';
+  private url: string = 'http://localhost:8080/SampleWebApp/addEmployeeByHotel';
 
   constructor(private http: HttpClient) { }
 

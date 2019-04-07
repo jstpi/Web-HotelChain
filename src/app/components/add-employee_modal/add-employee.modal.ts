@@ -190,7 +190,7 @@ export class AddEmployeeModal implements OnInit {
 
     this.addEmployeeService.addEmployee(JSON.stringify(signinObj)).subscribe(signInInfo => {
       console.log(signInInfo);
-      if (signInInfo.valid){
+      if (signInInfo != null){
         this.modalCtrl.dismiss({closeEvent: "submit"});
       }
       else {
