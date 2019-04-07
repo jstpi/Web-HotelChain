@@ -8,90 +8,30 @@
 </ion-header>
 <ion-content padding>
     <ion-list>
-        <ion-list-header>
-            <ion-label>Current</ion-label>
-        </ion-list-header>
-        <ion-item *ngFor="let rent of rents">
+        <ion-item *ngFor="let book_rent of book_rents">
             <ion-thumbnail class="roomThumbnail" slot="start">
-                <div *ngIf="rent.room.capacity == 1">
+                <div *ngIf="book_rent.capacity == 1">
                     <img src="assets/img/room-1.png">
                 </div>
-                <div *ngIf="rent.room.capacity == 2">
+                <div *ngIf="book_rent.capacity == 2">
                     <img src="assets/img/room-2.png">
                 </div>
-                <div *ngIf="rent.room.capacity == 3">
+                <div *ngIf="book_rent.capacity == 3">
                     <img src="assets/img/room-3.png">
                 </div>
-                <div *ngIf="rent.room.capacity == 4">
+                <div *ngIf="book_rent.capacity == 4">
                     <img src="assets/img/room-4.png">
                 </div>
-                <div *ngIf="rent.room.capacity > 4">
+                <div *ngIf="book_rent.capacity > 4">
                     <img src="assets/img/room-5.png">
                 </div>
             </ion-thumbnail>
-            <ion-label>{{rent.room.chain_name}} (room #{{rent.room.number}}) <ion-text color="success">rented</ion-text>
-                    <p>(Address)
+            <ion-label>{{book_rent.chain_name}} (room #{{book_rent.room_number}}) <ion-text *ngIf="!book_rent.is_book" color="success">rented</ion-text><ion-text *ngIf="book_rent.is_book" color="warning">booked</ion-text>
+                    <p>{{book_rent.address.address}}
                     </p>
                     <p>
-                        Check in: {{rent.check_in_format}} / Check out: {{rent.check_out_format}}
+                        Check in: {{book_rent.check_in}} / Check out: {{book_rent.check_out}}
                     </p>
-            </ion-label>
-        </ion-item>
-        <ion-item *ngFor="let book of books">
-            <ion-thumbnail class="roomThumbnail" slot="start">
-                <div *ngIf="book.room.capacity == 1">
-                    <img src="assets/img/room-1.png">
-                </div>
-                <div *ngIf="book.room.capacity == 2">
-                    <img src="assets/img/room-2.png">
-                </div>
-                <div *ngIf="book.room.capacity == 3">
-                    <img src="assets/img/room-3.png">
-                </div>
-                <div *ngIf="book.room.capacity == 4">
-                    <img src="assets/img/room-4.png">
-                </div>
-                <div *ngIf="book.room.capacity > 4">
-                    <img src="assets/img/room-5.png">
-                </div>
-            </ion-thumbnail>
-            <ion-label>{{book.room.chain_name}} (room #{{book.room.number}}) <ion-text *ngIf="!book.is_canceled" color="warning">booked</ion-text><ion-text *ngIf="book.is_canceled" color="danger">canceled</ion-text>
-                <p>(Address)
-                </p>
-                <p>
-                    Check in: {{book.check_in_format}} / Check out: {{book.check_out_format}}
-                </p>
-            </ion-label>
-        </ion-item>
-    </ion-list>
-    <ion-list>
-        <ion-list-header>
-            <ion-label>History</ion-label>
-        </ion-list-header>
-        <ion-item *ngFor="let rent of rents">
-            <ion-thumbnail class="roomThumbnail" slot="start">
-                <div *ngIf="rent.room.capacity == 1">
-                    <img src="assets/img/room-1.png">
-                </div>
-                <div *ngIf="rent.room.capacity == 2">
-                    <img src="assets/img/room-2.png">
-                </div>
-                <div *ngIf="rent.room.capacity == 3">
-                    <img src="assets/img/room-3.png">
-                </div>
-                <div *ngIf="rent.room.capacity == 4">
-                    <img src="assets/img/room-4.png">
-                </div>
-                <div *ngIf="rent.room.capacity > 4">
-                    <img src="assets/img/room-5.png">
-                </div>
-            </ion-thumbnail>
-            <ion-label>{{rent.room.chain_name}} (room #{{rent.room.number}})
-                <p>(Address)
-                </p>
-                <p>
-                    Check in: {{rent.check_in_format}} / Check out: {{rent.check_out_format}}
-                </p>
             </ion-label>
         </ion-item>
     </ion-list>

@@ -42,6 +42,8 @@ import { AddEmployeeModal } from './components/add-employee_modal/add-employee.m
 import { DeleteEmployeeService } from './services/delete-employee.service';
 import { AddRentService } from './services/add-rent.service';
 import { AddRentModal } from './components/add-rent_modal/add-rent.modal';
+import { BookRentService } from './services/book-rent.service';
+import { EmployeeHotelsService } from './services/employee-hotels.service';
 
 @NgModule({
   declarations: [AppComponent, LoginModal, SigninModal, MainPopover, AddHotelModal, AddRoomModal, EditRoomModal, AddEmployeeModal, AddRentModal],
@@ -78,7 +80,9 @@ import { AddRentModal } from './components/add-rent_modal/add-rent.modal';
     HotelEmployeeService,
     AddEmployeeService,
     DeleteEmployeeService,
-    AddRentService
+    AddRentService,
+    BookRentService,
+    EmployeeHotelsService
   ],
   bootstrap: [AppComponent]
 })

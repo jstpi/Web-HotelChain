@@ -16,6 +16,7 @@ import { AddHotelModal } from '../components/add-hotel_modal/add-hotel.modal';
 import { AdminHotelsService } from '../services/admin-hotels.service';
 import { ManageInfoService } from '../services/manage-info.service';
 import { DeleteHotelService } from '../services/delete-hotel.service';
+import { EmployeeHotelsService } from '../services/employee-hotels.service';
 
 @Component({
   selector: 'app-search',
@@ -44,7 +45,8 @@ export class SearchPage implements OnInit {
     private router: Router,
     private manageInfoService: ManageInfoService,
     private deleteHotelService: DeleteHotelService,
-    private toastController: ToastController) {
+    private toastController: ToastController,
+    private employeeHotelsService: EmployeeHotelsService) {
       this.searchForm = this.formBuilder.group({
         address: ['', Validators.required]
       });
@@ -207,6 +209,19 @@ export class SearchPage implements OnInit {
         }
         else if (this.userType == "Employee"){
           this.employee = new Employee(userInfo.sin, userInfo.email, userInfo.full_name, new Address(userInfo.address), []);
+          this.hotels = [];
+          this.employeeHotelsService.getEmployeeHotels(JSON.stringify(tokenSin)).subscribe(hotel => {
+            console.log(hotel);
+            if (hotel != null){
+              this.hotels.push(new Hotel(hotel.chain_name, hotel.hotel_id, hotel.rating, hotel.number_of_rooms, new Address(hotel.hotel_address), hotel.contact_email_address, [""], hotel.minPrice, hotel.capacities));
+              this.chain_name = hotel.chain_name;
+            }
+            else {
+              this.hotels = [];
+            }
+          }, err => {
+            this.errorString = err;
+          });
         }
         else if (this.userType == "Admin"){
           this.hotels = [];

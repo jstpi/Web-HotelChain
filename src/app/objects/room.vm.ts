@@ -1,7 +1,3 @@
-import { Rent } from './rent.vm';
-import { Book } from './book.vm';
-import { Hotel } from './hotel.vm';
-
 export class Room {
     number: number;
     price: number;
