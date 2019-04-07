@@ -6,8 +6,6 @@ export class Customer {
     full_name: string;
     address: Address;
     date_of_registration: Date;
-    rents: Rent[];
-    books: Book[];
     constructor(
         email: string, 
         sin: string, 
