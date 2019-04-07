@@ -38,7 +38,7 @@
                     <img src="assets/img/room-5.png">
                 </div>
             </ion-thumbnail>
-            <ion-label>Room #{{room.number}}
+            <ion-label>Room #{{room.number}} <ion-text color="warning" *ngIf="room.isBooked">(Booked)</ion-text> <ion-text color="success" *ngIf="room.isRented">(Rented)</ion-text>
                     <p>
                         Price: {{room.price}} $ / night
                     </p>
@@ -54,7 +54,7 @@
                                 <ion-button shape="round" clear item-right (click)="onEditRoom(i)"><ion-icon name="create"></ion-icon></ion-button>
                             </ion-col>
                             <ion-col>
-                                <ion-button *ngIf="!room.isBooked" color="warning" shape="round" clear item-right (click)="onRentRoom(i)"><ion-icon name="arrow-forward"></ion-icon>Rent</ion-button>
+                                <ion-button *ngIf="!room.isRented" color="warning" shape="round" clear item-right (click)="onRentRoom(i)"><ion-icon name="arrow-forward"></ion-icon>Rent</ion-button>
                             </ion-col>
                         </ion-row>
                     </ion-grid>

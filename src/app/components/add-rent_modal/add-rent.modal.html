@@ -1,0 +1,31 @@
+
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="back()"><ion-icon name="arrow-back"></ion-icon></ion-button>
+      </ion-buttons>
+      <ion-title>Rent room #{{room_number}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content padding>
+    <form [formGroup]="rentForm" (ngSubmit)="submit()">
+      <div *ngIf="errorString != ''">
+        <ion-text color="danger">{{errorString}}</ion-text>
+      </div>
+      <ion-list>
+        <ion-item>
+          <ion-label>SIN</ion-label>
+          <ion-input formControlName="sin"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>From: </ion-label>
+            <input type="date" formControlName="from" disabled>
+            <ion-label>To: </ion-label>
+            <input type="date" min="{{minTo}}" formControlName="to">
+        </ion-item>
+      </ion-list>
+      <div id="submit_div">
+        <ion-button id="submit_button" expand="full" shape="round" type="submit" [disabled]="!rentForm.valid">Submit</ion-button>
+      </div>
+    </form>
+  </ion-content>

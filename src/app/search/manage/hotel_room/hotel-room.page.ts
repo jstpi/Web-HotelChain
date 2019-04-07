@@ -9,6 +9,7 @@ import { HotelRentsService } from 'src/app/services/hotel-rents.service';
 import { ModalController } from '@ionic/angular';
 import { AddRoomModal } from 'src/app/components/add-room_modal/add-room.modal';
 import { EditRoomModal } from 'src/app/components/edit-room_modal/edit-room.modal';
+import { AddRentModal } from 'src/app/components/add-rent_modal/add-rent.modal';
 
 @Component({
   selector: 'app-hotel-room',
@@ -126,6 +127,13 @@ export class HotelRoomPage implements OnInit {
         this.rentedRooms.forEach(rentedRoom => {
           this.rooms.forEach(room => {
             if (rentedRoom.number == room.number){
+              room.isRented = true;
+            }
+          });
+        });
+        this.bookedRooms.forEach(bookedRoom => {
+          this.rooms.forEach(room => {
+            if (bookedRoom.number == room.number){
               room.isBooked = true;
             }
           });
@@ -245,6 +253,59 @@ export class HotelRoomPage implements OnInit {
         }
       }
     });
+  }
+
+  async onRentRoom(i: number){
+    if (this.isRoomsMode){
+      if (this.sortedRooms[i].isBooked){
+        this.bookedRooms.forEach(bookedRoom => {
+          if (bookedRoom.number == this.sortedRooms[i].number){
+            this.sortedRooms[i].check_out = bookedRoom.check_out;
+          }
+        });
+      }
+      let modal = await this.modalCtrl.create({
+        component: AddRentModal,
+        componentProps: {
+          chain_name: this.chain_name,
+          hotel_id: this.hotel_id,
+          room_number: this.sortedRooms[i].number,
+          to: this.sortedRooms[i].check_out,
+        }
+      });
+      await modal.present();
+      return await modal.onWillDismiss().then((data?)=>{
+        if (data.data !== undefined){
+          if (data.data.closeEvent == "addRent"){
+            this.getRentedRooms();
+            this.getBookedRooms();
+            this.getAllRooms();
+          }
+        }
+      });
+    }
+    else if (this.isBookedMode){
+      let modal = await this.modalCtrl.create({
+        component: AddRentModal,
+        componentProps: {
+          chain_name: this.chain_name,
+          hotel_id: this.hotel_id,
+          room_number: this.sortedRooms[i].number,
+          to: this.rentedRooms[i].check_out,
+        }
+      });
+      await modal.present();
+      return await modal.onWillDismiss().then((data?)=>{
+        if (data.data !== undefined){
+          if (data.data.closeEvent == "addRent"){
+            this.getRentedRooms();
+            this.getBookedRooms();
+            this.getAllRooms();
+          }
+        }
+      });
+    }
+    
   }
 
   private filterRooms(room_number: string): Room[] {

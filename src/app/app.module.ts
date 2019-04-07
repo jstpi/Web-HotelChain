@@ -40,10 +40,12 @@ import { HotelEmployeeService } from './services/hotel-employees.service';
 import { AddEmployeeService } from './services/add-employee.service';
 import { AddEmployeeModal } from './components/add-employee_modal/add-employee.modal';
 import { DeleteEmployeeService } from './services/delete-employee.service';
+import { AddRentService } from './services/add-rent.service';
+import { AddRentModal } from './components/add-rent_modal/add-rent.modal';
 
 @NgModule({
-  declarations: [AppComponent, LoginModal, SigninModal, MainPopover, AddHotelModal, AddRoomModal, EditRoomModal, AddEmployeeModal],
-  entryComponents: [LoginModal, SigninModal, MainPopover, AddHotelModal, AddRoomModal, EditRoomModal, AddEmployeeModal],
+  declarations: [AppComponent, LoginModal, SigninModal, MainPopover, AddHotelModal, AddRoomModal, EditRoomModal, AddEmployeeModal, AddRentModal],
+  entryComponents: [LoginModal, SigninModal, MainPopover, AddHotelModal, AddRoomModal, EditRoomModal, AddEmployeeModal, AddRentModal],
   imports: [
     BrowserModule, 
     IonicModule.forRoot(), 
@@ -75,7 +77,8 @@ import { DeleteEmployeeService } from './services/delete-employee.service';
     EditRoomService,
     HotelEmployeeService,
     AddEmployeeService,
-    DeleteEmployeeService
+    DeleteEmployeeService,
+    AddRentService
   ],
   bootstrap: [AppComponent]
 })

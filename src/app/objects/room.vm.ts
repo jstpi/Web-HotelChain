@@ -17,6 +17,7 @@ export class Room {
     check_out: string;
 
     isBooked: boolean;
+    isRented: boolean;
 
     constructor(number: number, hotel_id: string, chain_name: string, price: number, capacity: number, view_type: string, is_extendable: boolean, problems: string[], amenities: string[]) {
         this.number = number;
@@ -31,5 +32,6 @@ export class Room {
         this.check_in = "";
         this.check_out = "";
         this.isBooked = false;
+        this.isRented = false;
     }
 }
